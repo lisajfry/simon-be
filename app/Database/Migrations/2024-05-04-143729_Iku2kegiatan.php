@@ -18,21 +18,23 @@ class Iku2kegiatan extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 20,
             ],
-            'nama_mahasiswa' => [
-                'type'           => 'VARCHAR',
-                'constraint'     => 255,
-            ],
-            'angkatan' => [
-                'type'           => 'ENUM',
-                'constraint'     => ['2021', '2022', '2023'],
-            ],
             'aktivitas' => [
                 'type'           => 'ENUM',
                 'constraint'     => ['magang/praktek kerja ', 'pertukaran pelajar', 'proyek kemanusiaan', 'mengajar di sekolah', 'studi/proyek independen', 'proyek di desa/kkn', 'kegiatan wirausaha', 'penelitian atau riset'],
             ],
+            'tempat_kegiatan' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => 255,
+            ],
             'sks' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
+            ],
+            'tgl_mulai_kegiatan' =>[
+                'type' => 'DATE',
+            ],
+            'tgl_selesai_kegiatan' =>[
+                'type' => 'DATE',
             ],
         ]);
 

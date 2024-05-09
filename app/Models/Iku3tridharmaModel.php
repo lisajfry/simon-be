@@ -4,30 +4,27 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class LulusanModel extends Model
+class Iku3tridharmaModel extends Model
 {
-    protected $table            = 'lulusan';
-    protected $primaryKey       = 'no_ijazah';
-    protected $useAutoIncrement = false; // Menggunakan nilai NIM sebagai primary key
+    protected $table            = 'iku3tridharma';
+    protected $primaryKey       = 'iku3tridharma_id';
+    protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['no_ijazah', 'nama_alumni']; // Daftar kolom yang diperbolehkan untuk diisi
+    protected $allowedFields    = ['NIDN', 'surat_sk', 'ptn_tridharma', 'tgl_mulai_tridharma', 'tgl_selesai_tridharma'];
 
     protected bool $allowEmptyInserts = false;
 
     // Dates
     protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
+    protected $dateFormat    = 'date';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [
-        'no_ijazah' => 'required|is_unique[lulusan.no_ijazah]',
-        'nama_alumni' => 'required',
-    ];
+    protected $validationRules      = [];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
@@ -42,4 +39,15 @@ class LulusanModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    // Method to get data by NIM
+    public function getIku3tridharmaWithNamaDosen()
+    {
+        // Lakukan join antara tabel iku2kegiatan dan mahasiswa
+        return $this->db->table('iku3tridharma')
+                        ->select('iku3praktisi.*, dosen.nama_dosen')
+                        ->join('dosen', 'dosen.NIDN = iku3tridharma.NIDN')
+                        ->get()
+                        ->getResultArray();
+    }
 }

@@ -17,9 +17,13 @@ class Mahasiswa extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 255,
             ],
-            'angkatan'             => [
+            'angkatan'    => [
                 'type'           => 'ENUM',
-                'constraint'     => ['2021', '2022', '2023'],
+                'constraint'     => ['TI 2020','TI 2021','TI 2022','TI 2023'],
+            ],
+            'keterangan'    => [
+                'type'           => 'ENUM',
+                'constraint'     => ['lulus','mahasiswa aktif'],
             ],
         ]);
 

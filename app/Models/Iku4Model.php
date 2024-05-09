@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Iku1Model extends Model
+class Iku4Model extends Model
 {
-    protected $table            = 'iku1';
-    protected $primaryKey       = 'iku1_id';
+    protected $table            = 'iku4';
+    protected $primaryKey       = 'iku4_id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'status', 'gaji', 'masa_tunggu'];
+    protected $allowedFields    = ['NIDN', 'nama_dosen', 'status'];
 
     protected bool $allowEmptyInserts = false;
 
@@ -39,15 +39,4 @@ class Iku1Model extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    // Method to get data by NIM
-    public function getIku1WithNamaMahasiswa()
-    {
-        // Lakukan join antara tabel iku1 dan mahasiswa
-        return $this->db->table('iku1')
-                        ->select('iku1.*, mahasiswa.nama_mahasiswa')
-                        ->join('mahasiswa', 'mahasiswa.NIM = iku1.NIM')
-                        ->get()
-                        ->getResultArray();
-    }
 }

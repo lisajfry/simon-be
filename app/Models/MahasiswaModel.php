@@ -12,9 +12,7 @@ class MahasiswaModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'nama_mahasiswa', 'angkatan']; // Daftar kolom yang diperbolehkan untuk diisi
-
-    protected bool $allowEmptyInserts = false;
+    protected $allowedFields    = ['NIM', 'nama_mahasiswa', 'angkatan', 'keterangan']; // Menambahkan keterangan ke dalam daftar kolom yang diperbolehkan
 
     // Dates
     protected $useTimestamps = false;
@@ -28,6 +26,7 @@ class MahasiswaModel extends Model
         'NIM' => 'required|is_unique[mahasiswa.NIM]',
         'nama_mahasiswa' => 'required',
         'angkatan' => 'required',
+        'keterangan' => 'required', // Menambahkan aturan validasi untuk keterangan
     ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;

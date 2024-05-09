@@ -12,13 +12,13 @@ class Iku2kegiatanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM','nama_mahasiswa', 'angkatan', 'aktivitas','sks'];
+    protected $allowedFields    = ['NIM', 'aktivitas', 'tempat_kegiatan', 'sks', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan'];
 
     protected bool $allowEmptyInserts = false;
 
     // Dates
     protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
+    protected $dateFormat    = 'date';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
@@ -40,9 +40,14 @@ class Iku2kegiatanModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // Method to get data by no_ijazah
-    public function getByNIM($NIM)
+    // Method to get data by NIM
+    public function getIku2kegiatanWithNamaMahasiswa()
     {
-        return $this->where('NIM', $NIM)->first();
+        // Lakukan join antara tabel iku2kegiatan dan mahasiswa
+        return $this->db->table('iku2kegiatan')
+                        ->select('iku2kegiatan.*, mahasiswa.nama_mahasiswa')
+                        ->join('mahasiswa', 'mahasiswa.NIM = iku2kegiatan.NIM')
+                        ->get()
+                        ->getResultArray();
     }
 }

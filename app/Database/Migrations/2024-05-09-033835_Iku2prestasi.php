@@ -18,13 +18,9 @@ class Iku2prestasi extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 20,
             ],
-            'nama_mahasiswa' => [
-                'type'           => 'VARCHAR',
-                'constraint'     => 255,
-            ],
-            'angkatan' => [
-                'type'           => 'ENUM',
-                'constraint'     => ['2021', '2022', '2023'],
+            'NIDN' => [
+                'type'           => 'INT',
+                'constraint'     => 20,
             ],
             'tingkat_lomba' => [
                 'type'           => 'ENUM',
@@ -38,6 +34,7 @@ class Iku2prestasi extends Migration
 
         $this->forge->addPrimaryKey('iku2prestasi_id');
         $this->forge->addForeignKey('NIM', 'mahasiswa', 'NIM', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('NIDN', 'dosen', 'NIDN', 'CASCADE', 'CASCADE');
         $this->forge->createTable('iku2prestasi');
     }
 

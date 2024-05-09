@@ -15,13 +15,9 @@ class Iku1 extends Migration
                 'unsigned' => true,
                 'auto_increment' => true,
             ],
-            'no_ijazah' => [
-                'type' => 'VARCHAR',
-                'constraint' => 20,
-            ],
-            'nama_alumni' => [ // Menambahkan kolom nama_alumni
-                'type' => 'VARCHAR',
-                'constraint' => 100, // Sesuaikan constraint sesuai kebutuhan
+            'NIM'               => [
+                'type'           => 'VARCHAR',
+                'constraint'     => 20,
             ],
             'status' => [
                 'type' => 'ENUM("mendapat pekerjaan","melanjutkan studi","wiraswasta","mencari pekerjaan")',
@@ -38,7 +34,7 @@ class Iku1 extends Migration
         ]);
 
         $this->forge->addKey('iku1_id', true);
-        $this->forge->addForeignKey('no_ijazah', 'lulusan', 'no_ijazah', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('NIM', 'mahasiswa', 'NIM', 'CASCADE', 'CASCADE');
 
         $this->forge->createTable('iku1');
     }

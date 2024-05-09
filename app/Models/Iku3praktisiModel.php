@@ -4,21 +4,21 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Iku1Model extends Model
+class Iku3praktisiModel extends Model
 {
-    protected $table            = 'iku1';
-    protected $primaryKey       = 'iku1_id';
+    protected $table            = 'ikupraktisi';
+    protected $primaryKey       = 'iku3praktisi_id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'status', 'gaji', 'masa_tunggu'];
+    protected $allowedFields    = ['NIDN', 'surat_sk', 'instansi_praktisi', 'tgl_mulai_praktisi', 'tgl_selesai_praktisi'];
 
     protected bool $allowEmptyInserts = false;
 
     // Dates
     protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
+    protected $dateFormat    = 'date';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
@@ -41,12 +41,12 @@ class Iku1Model extends Model
     protected $afterDelete    = [];
 
     // Method to get data by NIM
-    public function getIku1WithNamaMahasiswa()
+    public function getIku3praktisiWithNamaDosen()
     {
-        // Lakukan join antara tabel iku1 dan mahasiswa
-        return $this->db->table('iku1')
-                        ->select('iku1.*, mahasiswa.nama_mahasiswa')
-                        ->join('mahasiswa', 'mahasiswa.NIM = iku1.NIM')
+        // Lakukan join antara tabel iku2kegiatan dan mahasiswa
+        return $this->db->table('iku3praktisi')
+                        ->select('iku3praktisi.*, dosen.nama_dosen')
+                        ->join('dosen', 'dosen.NIDN = iku3praktisi.NIDN')
                         ->get()
                         ->getResultArray();
     }
