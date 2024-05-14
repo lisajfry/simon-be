@@ -12,6 +12,11 @@ use App\Models\DosenModel;
 class Iku3tridharma extends ResourceController
 {
     use ResponseTrait;
+    protected $iku3tridharmaModel;
+    public function __construct()
+    {
+        $this->iku3tridharmaModel = new Iku3tridharmaModel();
+    }
 
     public function index()
     {
@@ -35,103 +40,73 @@ class Iku3tridharma extends ResourceController
     {
         helper(['form']);
 
-        // Ambil NIM dari request
         $NIDN = $this->request->getVar('NIDN');
-
-        // Periksa apakah NIM valid
         if (!$NIDN) {
             return $this->failValidationError('NIDN is required');
         }
 
-        // Cari data mahasiswa berdasarkan NIM
         $dosenModel = new DosenModel();
         $dosen = $dosenModel->where('NIDN', $NIDN)->first();
-
-        // Periksa apakah data mahasiswa ditemukan
         if (!$dosen) {
             return $this->failValidationError('No Data Found for the given NIDN');
         }
 
-      
-      // Data untuk disimpan
-$data = [
-    'NIDN' => $NIDN,
-    'surat_sk' => $this->request->getVar('surat_sk'),
-    'ptn_tridharma' => $this->request->getVar('ptn_ttridharma'),
-    'tgl_mulai_tridharma' => $this->request->getVar('tgl_mulai_tridharma'), // Tanggal dalam format yang sesuai
-    'tgl_selesai_tridharma' => $this->request->getVar('tgl_selesai_tridharma'), // Tanggal dalam format yang sesuai
-];
+        $surat_skFile = $this->request->getFile('surat_sk');
+        if ($surat_skFile->isValid() && !$surat_skFile->hasMoved()) {
+            $newName = $surat_skFile->getRandomName();
+            $surat_skFile->move(WRITEPATH . 'uploads', $newName);
 
+            $data = [
+                'NIDN' => $NIDN,
+                'surat_sk' => $newName,
+                'ptn_tridharma' => $this->request->getVar('ptn_tridharma'),
+                'tgl_mulai_tridharma' => $this->request->getVar('tgl_mulai_tridharma'),
+                'tgl_selesai_tridharma' => $this->request->getVar('tgl_selesai_tridharma'),
+            ];
 
-        // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                unset($data[$key]);
-            }
+            $model = new Iku3tridharmaModel();
+            $model->save($data);
+            return redirect()->to('/upload/success');
+        } else {
+            return $this->failValidationError('Failed to upload surat_sk file');
         }
-
-        $model = new Iku3tridharmaModel();
-        $model->save($data);
-
-        $response = [
-            'status'   => 201,
-            'error'    => null,
-            'messages' => [
-                'success' => 'Data Inserted'
-            ]
-        ];
-
-        return $this->respondCreated($response);
     }
 
-    public function update($iku3tridharma_id = null)
-    {
-        helper(['form']);
-
-        // Ambil NIM dari request
-        $NIDN = $this->request->getVar('NIDN');
-
-        // Periksa apakah NIM valid
-        if (!$NIDN) {
-            return $this->failValidationError('NIDN is required');
-        }
-
-        // Cari data mahasiswa berdasarkan NIM
-        $dosenModel = new DosenModel();
-        $dosen = $dosenModel->where('NIDN', $NIDN)->first();
-
-        // Periksa apakah data mahasiswa ditemukan
-        if (!$dosen) {
-            return $this->failValidationError('No Data Found for the given NIDN');
-        }
-
-      // Data untuk disimpan
-$data = [
-    'NIDN' => $NIDN,
-    'surat_sk' => $this->request->getVar('surat_sk'),
-    'ptn_tridharma' => $this->request->getVar('ptn_tridharma'),
-    'tgl_mulai_tridharma' => $this->request->getVar('tgl_mulai_tridharma'), // Tanggal dalam format yang sesuai
-    'tgl_selesai_tridharma' => $this->request->getVar('tgl_selesai_tridharma'), // Tanggal dalam format yang sesuai
-];
-
-
-        // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                unset($data[$key]);
-            }
-        }
-
-        $model = new Iku3tridharmaModel();
-        $dataToUpdate = $model->find($iku3tridharma_id);
-
-        if (!$dataToUpdate) return $this->failNotFound('No Data Found');
-
-        $model->update($iku3tridharma_id, $data);
-
-        // Kode untuk menampilkan view setelah update
-        return view('edit_iku3tridharma', $data);
+    public function update($id_iku3tridharma = null)
+{
+    $NIDN = $this->request->getVar('NIDN');
+    if (!$NIDN) {
+        return $this->failValidationError('NIDN is required');
     }
+
+    $dosenModel = new DosenModel();
+    $dosen = $dosenModel->where('NIDN', $NIDN)->first();
+    if (!$dosen) {
+        return $this->failValidationError('No Data Found for the given NIDN');
+    }
+
+    $data = [
+        'NIDN' => $NIDN,
+        'surat_sk' => $this->request->getVar('surat_sk'),
+        'ptn_tridharma' => $this->request->getVar('ptn_tridharma'),
+        'tgl_mulai_tridharma' => $this->request->getVar('tgl_mulai_tridharma'),
+        'tgl_selesai_tridharma' => $this->request->getVar('tgl_selesai_tridharma'),
+    ];
+
+    $model = new Iku3tridharmaModel();
+    $model->update($id_iku3tridharma, $data);
+
+    return redirect()->to('/iku3tridharma'); // Ganti dengan URL yang sesuai
+}
+
+
+
+    public function download($filename)
+{
+    return $this->response->download(WRITEPATH . 'uploads/' . $filename, null);
+}
+
+
 
     public function show($iku3tridharma_id = null)
     {
@@ -158,4 +133,10 @@ $data = [
         return $this->respondDeleted(['message' => 'Data Deleted Successfully']);
     }
 
+    public function success()
+    {
+        // Anda bisa menampilkan pesan sukses di sini, atau merender view yang berisi pesan sukses.
+        // Contoh sederhana: mengembalikan pesan sukses sebagai response JSON.
+        return $this->respond(['message' => 'File uploaded successfully']);
+    }
 }

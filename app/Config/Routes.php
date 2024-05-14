@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
+
 $routes->get('user', 'User::index');
 $routes->match(['post', 'options'], 'add/user', 'User::create');
 $routes->match(['put', 'options'], 'update/user/(:segment)', 'User::update/$1');
@@ -82,7 +83,6 @@ $routes->post('iku1/importExcel', 'Iku1::import');
 $routes->get('iku1/rekap', 'Iku1::rekap');
 
 
-
 $routes->get('iku2kegiatan', 'Iku2kegiatan::index');
 $routes->match(['post', 'options'], 'add/iku2kegiatan', 'Iku2kegiatan::create');
 $routes->match(['put', 'options'], 'update/iku2kegiatan/(:segment)', 'Iku2kegiatan::update/$1');
@@ -105,15 +105,13 @@ $routes->post('update/iku2prestasi/(:segment)', 'Iku2prestasi::update/$1');
 $routes->get('iku2prestasi/(:segment)', 'Iku2prestasi::get/$1');
 
 
-
 $routes->get('iku3tridharma', 'Iku3tridharma::index');
 $routes->match(['post', 'options'], 'add/iku3tridharma', 'Iku3tridharma::create');
 $routes->match(['put', 'options'], 'update/iku3tridharma/(:segment)', 'Iku3tridharma::update/$1');
-$routes->match(['put', 'options'], 'edit/iku3tridharma/(:segment)', 'Iku3tridharma::update/$1');
 $routes->match(['delete', 'options'], 'delete/iku3tridharma/(:segment)', 'Iku3tridharma::delete/$1');
-$routes->match(['get', 'options'], 'edit/iku3tridharma/(:segment)', 'Iku3tridharma::edit/$1');
-$routes->get('update/iku3tridharma/(:segment)', 'Iku3tridharma::update/$1');
 $routes->get('iku3tridharma/(:segment)', 'Iku3tridharma::get/$1');
+$routes->get('upload/success', 'Iku3tridharma::success');
+$routes->get('uploads/(:any)', 'Iku3tridharma::download/$1');
 
 
 $routes->get('iku3praktisi', 'Iku3praktisi::index');
@@ -123,6 +121,12 @@ $routes->match(['put', 'options'], 'edit/iku3praktisi/(:segment)', 'Iku3praktisi
 $routes->match(['delete', 'options'], 'delete/iku3praktisi/(:segment)', 'Iku3praktisi::delete/$1');
 $routes->match(['get', 'options'], 'edit/iku3praktisi/(:segment)', 'Iku3praktisi::edit/$1');
 $routes->get('update/iku3praktisi/(:segment)', 'Iku3praktisi::update/$1');
+$routes->get('iku3praktisi/(:segment)', 'Iku3praktisi::get/$1');
+$routes->get('upload/success', 'Iku3praktisi::success');
+$routes->get('uploads/(:any)', 'Iku3praktisi::download/$1');
+$routes->match(['put', 'options'], 'edit/iku3praktisi/(:segment)', 'Iku3praktisi::edit/$1');
+$routes->get('update/iku3praktisi/(:segment)', 'Iku3praktisi::update/$1');
+$routes->post('update/iku3praktisi/(:segment)', 'Iku3praktisi::update/$1');
 $routes->get('iku3praktisi/(:segment)', 'Iku3praktisi::get/$1');
 
 

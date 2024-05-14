@@ -19,13 +19,14 @@ class Iku3praktisi extends Migration
                 'constraint' => 20,
             ],
             'surat_sk' => [
-                'type' => 'LONGBLOB',
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'instansi_praktisi' =>[
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'tgl_mulai_praktsi' =>[
+            'tgl_mulai_praktisi' =>[
                 'type' => 'DATE',
             ],
             'tgl_selesai_praktisi' =>[

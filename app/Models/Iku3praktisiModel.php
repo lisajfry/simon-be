@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class Iku3praktisiModel extends Model
 {
-    protected $table            = 'ikupraktisi';
+    protected $table            = 'iku3praktisi';
     protected $primaryKey       = 'iku3praktisi_id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';

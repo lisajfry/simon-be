@@ -41,13 +41,15 @@ class Iku3tridharmaModel extends Model
     protected $afterDelete    = [];
 
     // Method to get data by NIM
+    
     public function getIku3tridharmaWithNamaDosen()
     {
         // Lakukan join antara tabel iku2kegiatan dan mahasiswa
         return $this->db->table('iku3tridharma')
-                        ->select('iku3praktisi.*, dosen.nama_dosen')
+                        ->select('iku3tridharma.*, dosen.nama_dosen')
                         ->join('dosen', 'dosen.NIDN = iku3tridharma.NIDN')
                         ->get()
                         ->getResultArray();
     }
+
 }

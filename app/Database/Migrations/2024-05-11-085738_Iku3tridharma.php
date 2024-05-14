@@ -19,7 +19,8 @@ class Iku3tridharma extends Migration
                 'constraint' => 20,
             ],
             'surat_sk' => [
-                'type' => 'LONGBLOB',
+                'type' => 'VARCHAR',
+                'constraint' => 255,
             ],
             'ptn_tridharma' =>[
                 'type' => 'VARCHAR',
