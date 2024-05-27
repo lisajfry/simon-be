@@ -94,6 +94,20 @@ $routes->post('update/iku2kegiatan/(:segment)', 'Iku2kegiatan::update/$1');
 $routes->get('iku2kegiatan/(:segment)', 'Iku2kegiatan::get/$1');
 
 
+$routes->get('iku2inbound', 'Iku2inbound::index');
+$routes->match(['post', 'options'], 'add/iku2inbound', 'Iku2inbound::create');
+$routes->match(['put', 'options'], 'update/iku2inbound/(:segment)', 'Iku2inbound::update/$1');
+$routes->match(['delete', 'options'], 'delete/iku2inbound/(:segment)', 'Iku2inbound::delete/$1');
+$routes->get('iku2inbound/(:segment)', 'Iku2inbound::get/$1');
+$routes->get('upload/success', 'Iku2inbound::success');
+$routes->get('uploads/(:any)', 'Iku2inbound::download/$1');
+$routes->match(['put', 'options'], 'edit/iku2inbound/(:segment)', 'Iku2inbound::edit/$1');
+$routes->get('update/iku2inbound/(:segment)', 'Iku2inbound::update/$1');
+$routes->post('update/iku2inbound/(:segment)', 'Iku2inbound::update/$1');
+$routes->get('iku2inbound/(:segment)', 'Iku2inbound::get/$1');
+
+
+
 $routes->get('iku2prestasi', 'Iku2prestasi::index');
 $routes->match(['post', 'options'], 'add/iku2prestasi', 'Iku2prestasi::create');
 $routes->match(['put', 'options'], 'update/iku2prestasi/(:segment)', 'Iku2prestasi::update/$1');
@@ -112,6 +126,10 @@ $routes->match(['delete', 'options'], 'delete/iku3tridharma/(:segment)', 'Iku3tr
 $routes->get('iku3tridharma/(:segment)', 'Iku3tridharma::get/$1');
 $routes->get('upload/success', 'Iku3tridharma::success');
 $routes->get('uploads/(:any)', 'Iku3tridharma::download/$1');
+$routes->match(['put', 'options'], 'edit/iku3tridharma/(:segment)', 'Iku3tridharma::edit/$1');
+$routes->get('update/iku3tridharma/(:segment)', 'Iku3tridharma::update/$1');
+$routes->post('update/iku3tridharma/(:segment)', 'Iku3tridharma::update/$1');
+$routes->get('iku3tridharma/(:segment)', 'Iku3tridharma::get/$1');
 
 
 $routes->get('iku3praktisi', 'Iku3praktisi::index');
@@ -130,7 +148,83 @@ $routes->post('update/iku3praktisi/(:segment)', 'Iku3praktisi::update/$1');
 $routes->get('iku3praktisi/(:segment)', 'Iku3praktisi::get/$1');
 
 
+$routes->get('iku4', 'Iku4::index');
+$routes->post('iku4', 'Iku4::create');
+$routes->match(['post', 'options'], 'add/iku4', 'Iku4::create');
+$routes->match(['put', 'options'], 'update/iku4/(:segment)', 'Iku4::update/$1');
+$routes->match(['put', 'options'], 'edit/iku4/(:segment)', 'Iku4::update/$1');
+$routes->match(['delete', 'options'], 'delete/iku4/(:segment)', 'Iku4::delete/$1');
+$routes->match(['get', 'options'], 'edit/iku4/(:segment)', 'Iku4::edit/$1');
+$routes->get('update/iku4/(:segment)', 'Iku4::update/$1');
+$routes->get('iku4/(:segment)', 'Iku4::get/$1');
+$routes->get('import/iku4', 'Iku4::import');
+$routes->options('import/iku4', 'Iku4::options');
+$routes->match(['post', 'options'], 'import/iku4', 'Iku4::import');
+$routes->match(['post', 'get'], 'iku4/import', 'Iku4::import');
+$routes->post('iku1/importExcel', 'Iku4::import');
+$routes->get('iku4/rekap', 'Iku4::rekap');
+
+
+$routes->get('dosenpraktisi', 'Dosenpraktisi::index');
+$routes->match(['post', 'options'], 'add/dosenpraktisi', 'Dosenpraktisi::create');
+$routes->match(['put', 'options'], 'update/dosenpraktisi/(:segment)', 'Dosenpraktisi::update/$1');
+$routes->match(['put', 'options'], 'edit/dosenpraktisi/(:segment)', 'Dosenpraktisi::update/$1');
+$routes->match(['delete', 'options'], 'delete/dosenpraktisi/(:segment)', 'Dosenpraktisi::delete/$1');
+$routes->match(['get', 'options'], 'edit/dosenpraktisi/(:segment)', 'Dosenpraktisi::edit/$1');
+$routes->get('update/dosenpraktisi/(:segment)', 'Dosenpraktisi::update/$1');
+$routes->get('dosenpraktisi/(:segment)', 'Dosenpraktisi::get/$1');
+$routes->get('import/dosenpraktisi', 'Dosenpraktisi::import');
+$routes->options('import/dosenpraktisi', 'Dosenpraktisi::options');
+$routes->match(['post', 'options'], 'import/dosenpraktisi', 'Dosenpraktisi::import');
+$routes->match(['post', 'get'], 'dosenpraktisi/import', 'Dosenpraktisi::import');
+$routes->post('dosenpraktisi/importExcel', 'Dosenpraktisi::import');
+
+
+
+$routes->get('iku5', 'Iku5::index');
+$routes->post('iku5', 'Iku5::create');
+$routes->match(['post', 'options'], 'add/iku5', 'Iku5::create');
+$routes->match(['put', 'options'], 'update/iku5/(:segment)', 'Iku5::update/$1');
+$routes->match(['put', 'options'], 'edit/iku5/(:segment)', 'Iku5::update/$1');
+$routes->match(['delete', 'options'], 'delete/iku5/(:segment)', 'Iku5::delete/$1');
+$routes->match(['get', 'options'], 'edit/iku5/(:segment)', 'Iku5::edit/$1');
+$routes->get('update/iku5/(:segment)', 'Iku5::update/$1');
+$routes->get('iku5/(:segment)', 'Iku5::get/$1');
+$routes->get('import/iku4', 'Iku4::import');
+$routes->options('import/iku4', 'Iku4::options');
+$routes->match(['post', 'options'], 'import/iku4', 'Iku4::import');
+$routes->match(['post', 'get'], 'iku4/import', 'Iku4::import');
+$routes->post('iku1/importExcel', 'Iku4::import');
+$routes->get('iku4/rekap', 'Iku4::rekap');
+
+
+$routes->get('iku6', 'Iku6::index');
+$routes->match(['post', 'options'], 'add/iku6', 'Iku6::create');
+$routes->match(['put', 'options'], 'update/iku6/(:segment)', 'Iku6::update/$1');
+$routes->match(['delete', 'options'], 'delete/iku6/(:segment)', 'Iku6::delete/$1');
+$routes->get('iku6/(:segment)', 'Iku6::get/$1');
+$routes->get('upload/success', 'Iku6::success');
+$routes->get('uploads/(:any)', 'Iku6::download/$1');
+$routes->match(['put', 'options'], 'edit/iku6/(:segment)', 'Iku6::edit/$1');
+$routes->get('update/iku6/(:segment)', 'Iku6::update/$1');
+$routes->get('iku6/(:segment)', 'Iku6::get/$1');
+
+
+
 $routes->get('iku7', 'Iku7::index');
 $routes->match(['post', 'options'], 'add/iku7', 'Iku7::create');
 $routes->match(['put', 'options'], 'update/iku7/(:segment)', 'Iku7::update/$1');
-$routes->delete('iku7/(:num)', 'Iku7::delete/$1');
+$routes->match(['delete', 'options'], 'delete/iku7/(:segment)', 'Iku7::delete/$1');
+$routes->get('iku7/(:segment)', 'Iku7::get/$1');
+$routes->get('upload/success', 'Iku7::success');
+$routes->get('uploads/(:any)', 'Iku7::download/$1');
+$routes->match(['put', 'options'], 'edit/iku7/(:segment)', 'Iku7::edit/$1');
+$routes->get('update/iku7/(:segment)', 'Iku7::update/$1');
+$routes->get('iku7/(:segment)', 'Iku7::get/$1');
+
+
+
+$routes->get('rekap', 'Rekap::index');
+$routes->match(['post', 'options'], 'add/rekap', 'Rekap::create');
+$routes->match(['put', 'options'], 'update/rekap/(:segment)', 'Rekap::update/$1');
+$routes->match(['delete', 'options'], 'delete/rekap/(:segment)', 'Rekap::delete/$1');

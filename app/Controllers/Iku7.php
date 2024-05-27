@@ -1,17 +1,16 @@
 <?php
 
+
 namespace App\Controllers;
 
-use CodeIgniter\HTTP\ResponseInterface;
+
 use CodeIgniter\RESTful\ResourceController;
-use Codeigniter\API\ResponseTrait;
-use App\Models\iku7Model;
+use App\Models\Iku7Model;
+
 
 class Iku7 extends ResourceController
 {
-    use ResponseTrait;
-
-    //index
+    // Index
     public function index()
     {
         $model = new Iku7Model();
@@ -19,7 +18,8 @@ class Iku7 extends ResourceController
         return $this->respond($data);
     }
 
-    //GET
+
+    // GET
     public function get($iku7_id = null)
     {
         $model = new Iku7Model();
@@ -31,124 +31,109 @@ class Iku7 extends ResourceController
         }
     }
 
-    //SHOW
+
+    // SHOW
     public function show($iku7_id = null)
     {
         $model = new Iku7Model();
-        $data = $model->find(['iku7_id'=> $iku7_id]);
-        if (!$data) return $this->failNotFound('No Data Found');
+        $data = $model->find($iku7_id);
+        if (!$data) {
+            return $this->failNotFound('No Data Found');
+        }
         return $this->respond($data);
     }
 
-    //CREATE
+
+    // CREATE
     public function create()
     {
-        helper(['form']);
-        $rules = [
-            'Kode_MK'                        => 'required|numeric',
-            'Nama_MK'                        => 'required',
-            'Tahun'                          => 'required|numeric',
-            'Semester'                       => 'required|numeric',
-            'Kelas'                          => 'required',
-            'Presentase_Bobot_Terpenuhi'     => 'required|numeric',
-            'RPS'                            => 'required',
-            'Rancangan_Tugas_Dan_Evaluasi'   => 'required',
-        ];
+        $model = new Iku7Model();
+
+
+        // File Upload Handling
+        $file = $this->request->getFile('rps');
+        if ($file->isValid() && $file->getExtension() === 'pdf') {
+            $newName = $file->getRandomName();
+            $file->move(ROOTPATH . 'public/uploads', $newName);
+            $rpsPath = 'uploads/' . $newName;
+        } else {
+            return $this->fail('Invalid File or File Type');
+        }
+
 
         $data = [
-            'Kode_MK'                      => $this->request->getVar('Kode_MK'),
-            'Nama_MK'                      => $this->request->getVar('Nama_MK'),
-            'Tahun'                        => $this->request->getVar('Tahun'),
-            'Semester'                     => $this->request->getVar('Semester'),
-            'Kelas'                        => $this->request->getVar('Kelas'),
-            'Presentase_Bobot_Terpenuhi'   => $this->request->getVar('Presentase_Bobot_Terpenuhi'),
-            'RPS'                          => $this->request->getVar('RPS'),
-            'Rancangan_Tugas_Dan_Evaluasi' => $this->request->getVar('Rancangan_Tugas_Dan_Evaluasi')
+            'kode_mk' => $this->request->getVar('kode_mk'),
+            'nama_mk' => $this->request->getVar('nama_mk'),
+            'tahun' => $this->request->getVar('tahun'),
+            'semester' => $this->request->getVar('semester'),
+            'kelas' => $this->request->getVar('kelas'),
+            'jum_bobot' => $this->request->getVar('jum_bobot'),
+            'rps' => $rpsPath, // Menyimpan path file RPS
         ];
 
-        if (!$this->validate($rules)) return $this->fail($this->validator->getErrors(), 400);
-        
-        $model = new Iku7Model();
-        $model->save($data);
+
+        $model->insert($data);
+
 
         $response = [
-            'status'   => 201,
-            'error'    => null,
+            'status' => 201,
+            'error' => null,
             'messages' => [
                 'success' => 'Data Inserted'
             ]
         ];
 
+
         return $this->respondCreated($response);
     }
 
 
-    //UPDATE
+    // UPDATE
     public function update($iku7_id = null)
     {
-        helper(['form']);
-        $rules = [
-            'Kode_MK'                        => 'required|numeric',
-            'Nama_MK'                        => 'required',
-            'Tahun'                          => 'required|numeric',
-            'Semester'                       => 'required|numeric',
-            'Kelas'                          => 'required',
-            'Presentase_Bobot_Terpenuhi'     => 'required|numeric',
-            'RPS'                            => 'required',
-            'Rancangan_Tugas_Dan_Evaluasi'   => 'required',
-        ];
-
-        $data = [
-            'Kode_MK'                      => $this->request->getVar('Kode_MK'),
-            'Nama_MK'                      => $this->request->getVar('Nama_MK'),
-            'Tahun'                        => $this->request->getVar('Tahun'),
-            'Semester'                     => $this->request->getVar('Semester'),
-            'Kelas'                        => $this->request->getVar('Kelas'),
-            'Presentase_Bobot_Terpenuhi'   => $this->request->getVar('Presentase_Bobot_Terpenuhi'),
-            'RPS'                          => $this->request->getVar('RPS'),
-            'Rancangan_Tugas_Dan_Evaluasi' => $this->request->getVar('Rancangan_Tugas_Dan_Evaluasi')
-        ];
-
-        if(!$this->validate($rules)) return $this->fail($this->validator->getErrors());
         $model = new Iku7Model();
-        $findById = $model->find(['iku7_id'=> $iku7_id]);
-        if (!$findById) return $this->failNotFound('No Data Found');
+        $data = [
+            'kode_mk' => $this->request->getVar('kode_mk'),
+            'nama_mk' => $this->request->getVar('nama_mk'),
+            'tahun' => $this->request->getVar('tahun'),
+            'semester' => $this->request->getVar('semester'),
+            'kelas' => $this->request->getVar('kelas'),
+            'jum_bobot' => $this->request->getVar('jum_bobot'),
+        ];
+
+
         $model->update($iku7_id, $data);
+
+
         $response = [
             'status' => 200,
-            'error'  => null,
+            'error' => null,
             'messages' => [
-                'success' => 'data updated!'
+                'success' => 'Data Updated'
             ]
         ];
 
-        return $this->respond($response);
 
+        return $this->respond($response);
     }
 
-    //DELETE
+
+    // DELETE
     public function delete($iku7_id = null)
     {
         $model = new Iku7Model();
-
-        if (!$iku7_id) return $this->failNotFound('No ID Provided');
-
-        $dataToDelete = $model->find($iku7_id);
-
-        if (!$dataToDelete) return $this->failNotFound('No Data Found');
-
         $model->delete($iku7_id);
 
+
         $response = [
-            'status'   => 200,
-            'error'    => null,
+            'status' => 200,
+            'error' => null,
             'messages' => [
                 'success' => 'Data Deleted'
             ]
         ];
 
-        return $this->respond($response);
+
+        return $this->respondDeleted($response);
     }
-
-
 }

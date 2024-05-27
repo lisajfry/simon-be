@@ -1,41 +1,33 @@
 <?php
 
-
 namespace App\Models;
-
 
 use CodeIgniter\Model;
 
-
-class Iku7Model extends Model
+class Iku2inboundModel extends Model
 {
-    protected $table            = 'iku7';
-    protected $primaryKey       = 'iku7_id';
+    protected $table            = 'iku2inbound';
+    protected $primaryKey       = 'iku2inbound_id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['kode_mk','nama_mk', 'tahun', 'semester', 'kelas','jum_bobot','rps'];
-
-
+    protected $allowedFields    = ['NIM', 'asal_negara', 'asal_ptn','surat_rekomendasi', 'sks', 'tgl_mulai_inbound', 'tgl_selesai_inbound'];
 
     protected bool $allowEmptyInserts = false;
 
-
     // Dates
     protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
+    protected $dateFormat    = 'date';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
-
 
     // Validation
     protected $validationRules      = [];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
-
 
     // Callbacks
     protected $allowCallbacks = true;
@@ -47,6 +39,15 @@ class Iku7Model extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-   
-   
+
+    // Method to get data by NIM
+    public function getIku2inboundWithNamaMahasiswa()
+    {
+       
+        return $this->db->table('iku2inbound')
+                        ->select('iku2inbound.*, mahasiswa.nama_mahasiswa')
+                        ->join('mahasiswa', 'mahasiswa.NIM = iku2inbound.NIM')
+                        ->get()
+                        ->getResultArray();
+    }
 }

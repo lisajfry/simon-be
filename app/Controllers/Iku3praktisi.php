@@ -72,60 +72,39 @@ class Iku3praktisi extends ResourceController
     return $this->response->download(WRITEPATH . 'uploads/' . $filename, null);
 }
 
-public function update($iku3praktisi_id = null)
+public function update($id_iku3praktisi = null)
 {
-    helper(['form']);
+    $NIDN = $this->request->getVar('NIDN');
+    if (!$NIDN) {
+        return $this->failValidationError('NIDN is required');
+    }
 
-    
-    // $NIDN = $this->request->getVar('NIDN');
-
-    // if (!$NIDN) {
-    //     return $this->failValidationError('NIDN is required');
-    // }
-
-    // // Cari data mahasiswa berdasarkan NIM
-    // $dosenModel = new DosenModel();
-    // $dosen = $dosenModel->where('NIDN', $NIDN)->first();
-
-    // Periksa apakah data mahasiswa ditemukan
-    // if (!$dosen) {
-    //     return $this->failValidationError('No Data Found for the given NIDN');
-    // }
+    $dosenModel = new DosenModel();
+    $dosen = $dosenModel->where('NIDN', $NIDN)->first();
+    if (!$dosen) {
+        return $this->failValidationError('No Data Found for the given NIDN');
+    }
 
     $surat_skFile = $this->request->getFile('surat_sk');
-if ($surat_skFile && $surat_skFile->isValid() && !$surat_skFile->hasMoved()) {
-        $newName = $surat_skFile->getRandomName();
-        $surat_skFile->move(WRITEPATH . 'uploads', $newName);
+        if ($surat_skFile->isValid() && !$surat_skFile->hasMoved()) {
+            $newName = $surat_skFile->getRandomName();
+            $surat_skFile->move(WRITEPATH . 'uploads', $newName);
 
-        $data = [
-            'NIDN' => $this->request->getVar('NIDN'),
-            'surat_sk' => $newName,
-            'instansi_praktisi' => $this->request->getVar('instansi_praktisi'),
-            'tgl_mulai_praktisi' => $this->request->getVar('tgl_mulai_praktisi'),
-            'tgl_selesai_praktisi' => $this->request->getVar('tgl_selesai_praktisi'),
-        ];
+    $data = [
+        'NIDN' => $NIDN,
+        'surat_sk' => $newName,
+        'instansi_praktisi' => $this->request->getVar('instansi_praktisi'),
+        'tgl_mulai_praktisi' => $this->request->getVar('tgl_mulai_praktisi'),
+        'tgl_selesai_praktisi' => $this->request->getVar('tgl_selesai_praktisi'),
+    ];
 
-        // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                unset($data[$key]);
-            }
-        }
+    $model = new Iku3praktisiModel();
+    $model->update($id_iku3praktisi, $data);
 
-        $model = new Iku3praktisiModel();
-        $dataToUpdate = $model->find($iku3praktisi_id);
-
-        if (!$dataToUpdate) return $this->failNotFound('No Data Found');
-
-        $model->update($iku3praktisi_id, $data); // perbaikan di sini
-
-        // Kode untuk menampilkan view setelah update
-        return view('edit_iku3praktisi', $data);
-    }
+    return redirect()->to('/iku3praktisi'); // Ganti dengan URL yang sesuai
 }
 
-
-
+}
     public function show($iku3praktisi_id = null)
     {
         $model = new Iku3praktisiModel();

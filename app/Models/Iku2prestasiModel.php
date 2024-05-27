@@ -12,7 +12,7 @@ class Iku2prestasiModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'NIDN', 'tingkat_lomba', 'prestasi'];
+    protected $allowedFields    = ['NIM', 'NIDN', 'nama_kompetisi','penyelenggara','tingkat_kompetisi', 'prestasi', 'countries', 'provinces', 'jmlh_peserta', 'jmlh_provinsi_mengikuti', 'jmlh_negara_mengikuti', 'sertifikat', 'sk_penugasan'];
 
     protected bool $allowEmptyInserts = false;
 
@@ -41,23 +41,25 @@ class Iku2prestasiModel extends Model
     protected $afterDelete    = [];
 
     // Method to get data by NIM
-    public function getIku2prestasiWithNamaMahasiswa()
+    public function getIku2kegiatanWithNamaMahasiswa()
     {
         // Lakukan join antara tabel iku2kegiatan dan mahasiswa
-        return $this->db->table('iku2prestasi')
-                        ->select('iku2prestasi.*, mahasiswa.nama_mahasiswa')
+        return $this->db->table('iku2kegiatan')
+                        ->select('iku2kegiatan.*, mahasiswa.nama_mahasiswa')
                         ->join('mahasiswa', 'mahasiswa.NIM = iku2kegiatan.NIM')
                         ->get()
                         ->getResultArray();
     }
 
-    public function getIku2prestasiWithNamaDosen()
+    // Relasi dengan tabel Mahasiswa
+    public function mahasiswa()
     {
-        // Lakukan join antara tabel iku2kegiatan dan mahasiswa
-        return $this->db->table('iku2prestasi')
-                        ->select('iku2prestasi.*, dosen.nama_dosen')
-                        ->join('dosen', 'dosen.NIDN = iku2prestasi.NIDN')
-                        ->get()
-                        ->getResultArray();
+        return $this->belongsTo(MahasiswaModel::class, 'NIM', 'NIM');
+    }
+
+    // Relasi dengan tabel Dosen
+    public function dosen()
+    {
+        return $this->belongsTo(DosenModel::class, 'NIDN', 'NIDN');
     }
 }

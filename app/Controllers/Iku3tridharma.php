@@ -84,10 +84,14 @@ class Iku3tridharma extends ResourceController
     if (!$dosen) {
         return $this->failValidationError('No Data Found for the given NIDN');
     }
+    $surat_skFile = $this->request->getFile('surat_sk');
+        if ($surat_skFile->isValid() && !$surat_skFile->hasMoved()) {
+            $newName = $surat_skFile->getRandomName();
+            $surat_skFile->move(WRITEPATH . 'uploads', $newName);
 
     $data = [
         'NIDN' => $NIDN,
-        'surat_sk' => $this->request->getVar('surat_sk'),
+        'surat_sk' => $newName,
         'ptn_tridharma' => $this->request->getVar('ptn_tridharma'),
         'tgl_mulai_tridharma' => $this->request->getVar('tgl_mulai_tridharma'),
         'tgl_selesai_tridharma' => $this->request->getVar('tgl_selesai_tridharma'),
@@ -98,7 +102,7 @@ class Iku3tridharma extends ResourceController
 
     return redirect()->to('/iku3tridharma'); // Ganti dengan URL yang sesuai
 }
-
+}
 
 
     public function download($filename)

@@ -1,26 +1,20 @@
 <?php
 
-
 namespace App\Models;
-
 
 use CodeIgniter\Model;
 
-
-class Iku7Model extends Model
+class Iku5Model extends Model
 {
-    protected $table            = 'iku7';
-    protected $primaryKey       = 'iku7_id';
+    protected $table            = 'iku5';
+    protected $primaryKey       = 'iku5_id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['kode_mk','nama_mk', 'tahun', 'semester', 'kelas','jum_bobot','rps'];
-
-
+    protected $allowedFields    = ['NIDN', 'nama_dosen', 'hasilkerjadosen'];
 
     protected bool $allowEmptyInserts = false;
-
 
     // Dates
     protected $useTimestamps = false;
@@ -29,13 +23,11 @@ class Iku7Model extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
-
     // Validation
     protected $validationRules      = [];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
-
 
     // Callbacks
     protected $allowCallbacks = true;
@@ -47,6 +39,4 @@ class Iku7Model extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-   
-   
 }

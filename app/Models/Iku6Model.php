@@ -7,16 +7,15 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 
-class Iku7Model extends Model
+class Iku6Model extends Model
 {
-    protected $table            = 'iku7';
-    protected $primaryKey       = 'iku7_id';
+    protected $table            = 'iku6';
+    protected $primaryKey       = 'iku6_id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['kode_mk','nama_mk', 'tahun', 'semester', 'kelas','jum_bobot','rps'];
-
+    protected $allowedFields    = ['nama_mitra', 'nama_Kegiatan', 'alamat_mitra', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan', 'kriteria_mitra'];
 
 
     protected bool $allowEmptyInserts = false;
@@ -47,6 +46,4 @@ class Iku7Model extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-   
-   
 }

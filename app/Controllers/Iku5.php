@@ -6,24 +6,24 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\Iku4Model;
+use App\Models\Iku5Model;
 use App\Models\DosenModel;
 
-class Iku4 extends ResourceController
+class Iku5 extends ResourceController
 {
     use ResponseTrait;
 
     public function index()
     {
-        $model = new Iku4Model();
+        $model = new Iku5Model();
         $data = $model->findAll();
         return $this->respond($data);
     }
 
-    public function get($iku4_id = null)
+    public function get($iku5_id = null)
     {
-        $model = new Iku4Model();
-        $data = $model->find($iku4_id);
+        $model = new Iku5Model();
+        $data = $model->find($iku5_id);
         if (!$data) {
             return $this->failNotFound('No Data Found');
         } else {
@@ -64,16 +64,10 @@ class Iku4 extends ResourceController
             return $this->failValidationError('No Data Found for the given NIDN');
         }
 
-        $bukti_pdfFile = $this->request->getFile('bukti_pdf');
-        if ($bukti_pdfFile->isValid() && !$bukti_pdfFile->hasMoved()) {
-            $newName = $bukti_pdfFile->getRandomName();
-            $bukti_pdfFile->move(WRITEPATH . 'uploads', $newName);
-
         // Data untuk disimpan
         $data = [
             'NIDN' => $NIDN,
             'status' => $this->request->getVar('status'),
-            'bukti_pdf' => $newName,
         ];
 
         // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
@@ -83,7 +77,7 @@ class Iku4 extends ResourceController
             }
         }
 
-        $model = new Iku4Model();
+        $model = new Iku5Model();
         $model->save($data);
 
         $response = [
@@ -96,8 +90,8 @@ class Iku4 extends ResourceController
 
         return $this->respondCreated($response);
     }
-    }
-    public function update($iku4_id = null)
+
+    public function update($iku5_id = null)
     {
         helper(['form']);
 
@@ -131,21 +125,21 @@ class Iku4 extends ResourceController
             }
         }
 
-        $model = new Iku4Model();
-        $dataToUpdate = $model->find($iku4_id);
+        $model = new Iku5Model();
+        $dataToUpdate = $model->find($iku5_id);
 
         if (!$dataToUpdate) return $this->failNotFound('No Data Found');
 
-        $model->update($iku4_id, $data);
+        $model->update($iku5_id, $data);
 
         // Kode untuk menampilkan view setelah update
-        return view('edit_iku4', $data);
+        return view('edit_iku5', $data);
     }
 
-    public function show($iku4_id = null)
+    public function show($iku5_id = null)
     {
-        $model = new Iku4Model();
-        $data = $model->find($iku4_id);
+        $model = new Iku5Model();
+        $data = $model->find($iku5_id);
         if (!$data) {
             return $this->failNotFound('No Data Found');
         } else {
@@ -153,16 +147,16 @@ class Iku4 extends ResourceController
         }
     }
 
-    public function delete($iku4_id = null)
+    public function delete($iku5_id = null)
     {
-        $model = new Iku4Model();
-        $data = $model->find($iku4_id);
+        $model = new Iku5Model();
+        $data = $model->find($iku5_id);
 
         if (!$data) {
             return $this->failNotFound('No Data Found');
         }
 
-        $model->delete($iku4_id);
+        $model->delete($iku5_id);
 
         return $this->respondDeleted(['message' => 'Data Deleted Successfully']);
     }

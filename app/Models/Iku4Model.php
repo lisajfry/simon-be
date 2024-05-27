@@ -12,7 +12,7 @@ class Iku4Model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIDN', 'nama_dosen', 'status'];
+    protected $allowedFields    = ['NIDN', 'nama_dosen', 'status','bukti_pdf'];
 
     protected bool $allowEmptyInserts = false;
 

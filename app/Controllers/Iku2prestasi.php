@@ -2,13 +2,11 @@
 
 namespace App\Controllers;
 
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Iku2prestasiModel;
 use App\Models\MahasiswaModel;
-use App\Models\DosenModel;
+use CodeIgniter\HTTP\Response;
 
 class Iku2prestasi extends ResourceController
 {
@@ -32,6 +30,7 @@ class Iku2prestasi extends ResourceController
         }
     }
 
+
     public function create()
     {
         helper(['form']);
@@ -52,46 +51,37 @@ class Iku2prestasi extends ResourceController
         if (!$mahasiswa) {
             return $this->failValidationError('No Data Found for the given NIM');
         }
+        $sertifikatFile = $this->request->getFile('sertifikat');
+        if ($sertifikatFile->isValid() && !$sertifikatFile->hasMoved()) {
+            $newName = $sertifikatFile->getRandomName();
+            $sertifikatFile->move(WRITEPATH . 'uploads', $newName);
 
+       
 
-        // Ambil NIM dari request
-        $NIDN = $this->request->getVar('NIDN');
-
-        // Periksa apakah NIM valid
-        if (!$NIDN) {
-            return $this->failValidationError('NIDN is required');
-        }
-
-        // Cari data mahasiswa berdasarkan NIM
-        $dosenModel = new DosenModel();
-        $dosen = $dosenModel->where('NIDN', $NIDN)->first();
-
-        // Periksa apakah data mahasiswa ditemukan
-        if (!$dosen) {
-            return $this->failValidationError('No Data Found for the given NIDN');
-        }
-      
-                // Data untuk disimpan
-            $data = [
-                'NIM' => $NIM,
-                'NIDN' => $NIDN,
-                'tingkat_lomba' => $this->request->getVar('tingkat_lomba'),
-                'prestasi' => $this->request->getVar('prestasi'),
-            ];
-
-        // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                unset($data[$key]);
-            }
-        }
+        // Data untuk disimpan
+        $data = [
+            'NIM' => $NIM,
+            'NIDN' => $this->request->getVar('NIDN'),
+            'nama_kompetisi' => $this->request->getVar('nama_kompetisi'),
+            'penyelenggara' => $this->request->getVar('penyelenggara'),
+            'tingkat_kompetisi' => $this->request->getVar('tingkat_kompetisi'),
+            'jmlh_peserta' => $this->request->getVar('jmlh_peserta'),
+            'prestasi' => $this->request->getVar('prestasi'),
+            'countries' => json_encode($this->request->getVar('countries')),
+            'provinces' => json_encode($this->request->getVar('provinces')),
+            'jmlh_negara_mengikuti' => $this->request->getVar('jmlh_negara_mengikuti'),
+            'jmlh_provinsi_mengikuti' => $this->request->getVar('jmlh_provinsi_mengikuti'),
+            'sertifikat' => $newName,
+            
+            // tambahkan field lainnya sesuai kebutuhan
+        ];
 
         $model = new Iku2prestasiModel();
         $model->save($data);
 
         $response = [
-            'status'   => 201,
-            'error'    => null,
+            'status' => 201,
+            'error' => null,
             'messages' => [
                 'success' => 'Data Inserted'
             ]
@@ -99,8 +89,9 @@ class Iku2prestasi extends ResourceController
 
         return $this->respondCreated($response);
     }
-
-    public function update($iku2prestasi_id = null)
+        }
+    
+    public function update($id = null)
     {
         helper(['form']);
 
@@ -121,72 +112,26 @@ class Iku2prestasi extends ResourceController
             return $this->failValidationError('No Data Found for the given NIM');
         }
 
-        $NIDN = $this->request->getVar('NIDN');
-
-        // Periksa apakah NIM valid
-        if (!$NIDN) {
-            return $this->failValidationError('NIDN is required');
-        }
-
-        // Cari data mahasiswa berdasarkan NIM
-        $dosenModel = new DosenModel();
-        $dosen = $dosenModel->where('NIDN', $NIDN)->first();
-
-        // Periksa apakah data mahasiswa ditemukan
-        if (!$dosen) {
-            return $this->failValidationError('No Data Found for the given NIDN');
-        }
-
-
-      // Data untuk disimpan
-            $data = [
-                'NIM' => $NIM,
-                'NIDN' => $NIDN,
-                'tingkat_lomba' => $this->request->getVar('tingkat_lomba'),
-                'prestasi' => $this->request->getVar('prestasi'),
-            ];
-
-        // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                unset($data[$key]);
-            }
-        }
+        // Data untuk disimpan
+        $data = [
+            'NIM' => $NIM,
+            'NIDN' => $this->request->getVar('NIDN'),
+            'nama_kompetisi' => $this->request->getVar('nama_kompetisi'),
+            'penyelenggara' => $this->request->getVar('penyelenggara'),
+            'tingkat_kompetisi' => $this->request->getVar('tingkat_kompetisi'),
+            'jmlh_peserta' => $this->request->getVar('jmlh_peserta'),
+            'prestasi' => $this->request->getVar('prestasi'),
+            'countries' => json_encode($this->request->getVar('countries')),
+            'provinces' => json_encode($this->request->getVar('provinces')),
+            'jmlh_negara_mengikuti' => $this->request->getVar('jmlh_negara_mengikuti'),
+            'jmlh_provinsi_mengikuti' => $this->request->getVar('jmlh_provinsi_mengikuti'),
+            // tambahkan field lainnya sesuai kebutuhan
+        ];
 
         $model = new Iku2prestasiModel();
-        $dataToUpdate = $model->find($iku2prestasi_id);
-
-        if (!$dataToUpdate) return $this->failNotFound('No Data Found');
-
-        $model->update($iku2prestasi_id, $data);
+        $model->update($id, $data);
 
         // Kode untuk menampilkan view setelah update
         return view('edit_iku2prestasi', $data);
     }
-
-    public function show($iku2prestasi_id = null)
-    {
-        $model = new Iku2prestasiModel();
-        $data = $model->find($iku2prestasi_id);
-        if (!$data) {
-            return $this->failNotFound('No Data Found');
-        } else {
-            return $this->respond($data);
-        }
-    }
-
-    public function delete($iku2prestasi_id = null)
-    {
-        $model = new Iku2prestasiModel();
-        $data = $model->find($iku2prestasi_id);
-
-        if (!$data) {
-            return $this->failNotFound('No Data Found');
-        }
-
-        $model->delete($iku2prestasi_id);
-
-        return $this->respondDeleted(['message' => 'Data Deleted Successfully']);
-    }
-
 }

@@ -1,8 +1,11 @@
 <?php
 
+
 namespace App\Database\Migrations;
 
+
 use CodeIgniter\Database\Migration;
+
 
 class Iku7 extends Migration
 {
@@ -13,43 +16,43 @@ class Iku7 extends Migration
                 'type' => 'INT',
                 'constraint' => 5,
                 'auto_increment' => true
-            ],            
-            'Kode_MK' => [
-                'type' => 'BIGINT',
+            ],
+            'kode_mk' => [
+                'type' => 'INT',
                 'constraint' => 20,
             ],
-            'Nama_MK' => [
+            'nama_mk' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'Tahun' => [
+            'tahun' => [
                 'type' => 'INT',
                 'constraint' => 4,
             ],
-            'Semester' => [
-                'type' => 'INT',
-                'constraint' => 1,
+            'semester' => [
+                'type' => 'ENUM("1","2","3","4","5","6")',
+                'null' => false,
             ],
-            'Kelas' => [
+            'kelas' => [
+                'type' => 'ENUM("A","B","C","D")',
+                'null' => false,
+            ],
+            'jum_bobot' => [
+                'type' => 'INT',
+                'constraint' => 3,
+            ],
+            'rps' => [
                 'type' => 'VARCHAR',
-                'constraint' => 50,
-            ],
-            'Presentase_Bobot_Terpenuhi' => [
-                'type' => 'INT',
-                'constraint' => 5,
-            ],
-            'RPS' => [
-                'type' => 'TEXT',
-            ],
-            'Rancangan_Tugas_Dan_Evaluasi' => [
-                'type' => 'TEXT', 
+                'constraint' => 255,
             ],
         ]);
+
 
         $this->forge->addKey('iku7_id', true);
         $this->forge->createTable('iku7');
     }
-    
+
+
     public function down()
     {
         $this->forge->dropTable('iku7');

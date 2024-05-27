@@ -20,13 +20,13 @@ class Iku4 extends Migration
                 'type'           => 'INT', // Diasumsikan NIDN adalah tipe integer
                 'constraint'     => 20,
             ],
-            'nama_dosen'       => [
-                'type'           => 'VARCHAR',
-                'constraint'     => 255,
-            ],
             'status' => [
                 'type' => 'ENUM',
                 'constraint' => ['Dosen Berkualifikasi S3', 'Sertifikasi Kompetensi Dosen', 'Praktisi Menjadi Dosen','Praktisi Mengajar (Flagship)'],
+            ],
+            'bukti_pdf'               => [
+                'type'           => 'VARCHAR', 
+                'constraint'     => 20,
             ],
         ]);
 
@@ -36,7 +36,6 @@ class Iku4 extends Migration
         $this->forge->createTable('iku4');
         
         // Set auto-increment starting from 1000
-        $this->db->query('ALTER TABLE iku4 AUTO_INCREMENT = 1000');
     }
 
     public function down()
