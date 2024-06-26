@@ -22,7 +22,15 @@ class Iku3tridharma extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],  
-            'ptn_tridharma' =>[
+            'jenis_tridharma' => [
+                'type'           => 'ENUM',
+                'constraint'     => ['pendidikan', 'penelitian', 'pengabdian kepada masyarakat'],
+            ],
+            'nama_aktivitas_tridharma' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => 255,
+            ],
+            'tempat_tridharma' =>[
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],

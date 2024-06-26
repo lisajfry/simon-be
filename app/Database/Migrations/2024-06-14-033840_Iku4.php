@@ -20,19 +20,24 @@ class Iku4 extends Migration
                 'type'           => 'INT', // Diasumsikan NIDN adalah tipe integer
                 'constraint'     => 20,
             ],
+            // 'NIDK'               => [
+            //     'type'           => 'VARCHAR', // Diasumsikan NIDN adalah tipe integer
+            //     'constraint'     => 20,
+            // ],
             'status' => [
                 'type' => 'ENUM',
-                'constraint' => ['Dosen Berkualifikasi S3', 'Sertifikasi Kompetensi Dosen', 'Praktisi Menjadi Dosen','Praktisi Mengajar (Flagship)'],
+                'constraint' => ['Dosen yang Memiliki Sertifikasi Kompetensi/Profesi', 'Dosen dari Kalangan Praktisi Profesional'],
             ],
             'bukti_pdf'               => [
-                'type'           => 'VARCHAR', 
+                'type'           => 'VARCHAR', // Diasumsikan NIDN adalah tipe integer
                 'constraint'     => 20,
             ],
+
         ]);
 
         $this->forge->addKey('iku4_id', true);
         $this->forge->addForeignKey('NIDN','dosen', 'NIDN', 'CASCADE','CASCADE');
-
+        // $this->forge->addForeignKey('NIDK','dosenNIDK', 'NIDK', 'CASCADE','CASCADE');
         $this->forge->createTable('iku4');
         
         // Set auto-increment starting from 1000

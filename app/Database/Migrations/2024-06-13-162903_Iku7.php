@@ -1,6 +1,8 @@
 <?php
 
 
+
+
 namespace App\Database\Migrations;
 
 
@@ -18,8 +20,8 @@ class Iku7 extends Migration
                 'auto_increment' => true
             ],
             'kode_mk' => [
-                'type' => 'INT',
-                'constraint' => 20,
+                'type' => 'BIGINT',
+                'constraint' => 11,  // Berikan constraint yang cukup besar
             ],
             'nama_mk' => [
                 'type' => 'VARCHAR',
@@ -30,16 +32,24 @@ class Iku7 extends Migration
                 'constraint' => 4,
             ],
             'semester' => [
-                'type' => 'ENUM("1","2","3","4","5","6")',
+                'type' => 'ENUM("Ganjil","Genap")',
                 'null' => false,
             ],
             'kelas' => [
                 'type' => 'ENUM("A","B","C","D")',
                 'null' => false,
             ],
-            'jum_bobot' => [
+            'case_method' => [
                 'type' => 'INT',
                 'constraint' => 3,
+            ],
+            'tb_project' => [
+                'type' => 'INT',
+                'constraint' => 3,
+            ],
+            'presentase_bobot' => [
+                'type' => 'FLOAT',
+                'null' => false,
             ],
             'rps' => [
                 'type' => 'VARCHAR',

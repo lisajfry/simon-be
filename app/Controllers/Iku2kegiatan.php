@@ -8,6 +8,7 @@ use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Iku2kegiatanModel;
 use App\Models\MahasiswaModel;
+use App\Models\DosenModel;
 
 class Iku2kegiatan extends ResourceController
 {
@@ -37,18 +38,29 @@ class Iku2kegiatan extends ResourceController
 
         // Ambil NIM dari request
         $NIM = $this->request->getVar('NIM');
+        $NIDN = $this->request->getVar('NIDN');
 
         // Periksa apakah NIM valid
         if (!$NIM) {
             return $this->failValidationError('NIM is required');
+        }
+        if (!$NIDN) {
+            return $this->failValidationError('NIDN is required');
         }
 
         // Cari data mahasiswa berdasarkan NIM
         $mahasiswaModel = new MahasiswaModel();
         $mahasiswa = $mahasiswaModel->where('NIM', $NIM)->first();
 
+        $dosenModel = new DosenModel();
+        $dosen = $dosenModel->where('NIDN', $NIDN)->first();
+
         // Periksa apakah data mahasiswa ditemukan
         if (!$mahasiswa) {
+            return $this->failValidationError('No Data Found for the given NIM');
+        }
+
+        if (!$dosen) { 
             return $this->failValidationError('No Data Found for the given NIM');
         }
 
@@ -56,6 +68,7 @@ class Iku2kegiatan extends ResourceController
       // Data untuk disimpan
 $data = [
     'NIM' => $NIM,
+    'NIDN' => $NIDN,
     'aktivitas' => $this->request->getVar('aktivitas'),
     'tempat_kegiatan' => $this->request->getVar('tempat_kegiatan'),
     'sks' => $this->request->getVar('sks'),
@@ -93,24 +106,37 @@ $data = [
 
         // Ambil NIM dari request
         $NIM = $this->request->getVar('NIM');
+        $NIDN = $this->request->getVar('NIDN');
 
         // Periksa apakah NIM valid
         if (!$NIM) {
             return $this->failValidationError('NIM is required');
+        }
+        if (!$NIDN) {
+            return $this->failValidationError('NIDN is required');
         }
 
         // Cari data mahasiswa berdasarkan NIM
         $mahasiswaModel = new MahasiswaModel();
         $mahasiswa = $mahasiswaModel->where('NIM', $NIM)->first();
 
+        $dosenModel = new DosenModel();
+        $dosen = $dosenModel->where('NIDN', $NIDN)->first();
+
         // Periksa apakah data mahasiswa ditemukan
         if (!$mahasiswa) {
             return $this->failValidationError('No Data Found for the given NIM');
         }
 
+        if (!$dosen) {
+            return $this->failValidationError('No Data Found for the given NIM');
+        }
+
+
       // Data untuk disimpan
 $data = [
     'NIM' => $NIM,
+    'NIDN' => $NIDN,
     'aktivitas' => $this->request->getVar('aktivitas'),
     'tempat_kegiatan' => $this->request->getVar('tempat_kegiatan'),
     'sks' => $this->request->getVar('sks'),

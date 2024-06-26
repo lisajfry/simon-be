@@ -18,11 +18,11 @@ class Iku2Inbound extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 20,
             ],
-            'asal_negara' => [
+            'ptn_asal' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => 255,
             ],
-            'asal_ptn' => [
+            'ptn_pertukaran' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => 255,
             ],
@@ -34,6 +34,10 @@ class Iku2Inbound extends Migration
                 'type'           => 'INT',
                 'constraint'     => 11,
             ],
+            'NIDN' => [
+                'type'           => 'INT',
+                'constraint'     => 20,
+            ],
             'tgl_mulai_inbound' =>[
                 'type' => 'DATE',
             ],
@@ -44,6 +48,8 @@ class Iku2Inbound extends Migration
 
         $this->forge->addPrimaryKey('iku2inbound_id');
         $this->forge->addForeignKey('NIM', 'mahasiswa', 'NIM', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('NIDN', 'dosen', 'NIDN', 'CASCADE', 'CASCADE');
+
         $this->forge->createTable('iku2inbound');
     }
 

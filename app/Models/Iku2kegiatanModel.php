@@ -12,7 +12,7 @@ class Iku2kegiatanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'aktivitas', 'tempat_kegiatan', 'sks', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan'];
+    protected $allowedFields    = ['NIM', 'aktivitas', 'tempat_kegiatan', 'sks', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan', 'NIDN'];
 
     protected bool $allowEmptyInserts = false;
 
@@ -47,6 +47,16 @@ class Iku2kegiatanModel extends Model
         return $this->db->table('iku2kegiatan')
                         ->select('iku2kegiatan.*, mahasiswa.nama_mahasiswa')
                         ->join('mahasiswa', 'mahasiswa.NIM = iku2kegiatan.NIM')
+                        ->get()
+                        ->getResultArray();
+    }
+
+    public function getIku2kegiatanWithNamaDosen()
+    {
+        // Lakukan join antara tabel iku2kegiatan dan mahasiswa
+        return $this->db->table('iku2kegiatan')
+                        ->select('iku2kegiatan.*, dosen.nama_dosen')
+                        ->join('dosen', 'dosen.NIDN = iku2kegiatan.NIDN')
                         ->get()
                         ->getResultArray();
     }

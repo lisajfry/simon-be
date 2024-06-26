@@ -12,7 +12,7 @@ class Iku4Model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIDN', 'nama_dosen', 'status','bukti_pdf'];
+    protected $allowedFields    = ['NIDN', 'status'];
 
     protected bool $allowEmptyInserts = false;
 
@@ -39,4 +39,25 @@ class Iku4Model extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    // Method to get data by NIM
+    public function getIku4WithNamaDosen()
+    {
+        // Lakukan join antara tabel iku1 dan mahasiswa
+        return $this->db->table('iku4')
+                        ->select('iku4.*, dosen.nama_dosen')
+                        ->join('dosen', 'dosen.NIDN = iku4.NIDN')
+                        ->get()
+                        ->getResultArray();
+    }
+    public function getIku4WithNamaDosenpraktisi()
+    {
+        // Lakukan join antara tabel iku1 dan mahasiswa
+        return $this->db->table('iku4')
+                        ->select('iku4.*, dosenNIDK.nama_dosen')
+                        ->join('dosenNIDK', 'dosenNIDK.NIDK = iku4.NIDK')
+                        ->get()
+                        ->getResultArray();
+    }
+
 }

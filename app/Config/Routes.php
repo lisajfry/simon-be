@@ -24,6 +24,15 @@ $routes->post('user/importExcel', 'User::import');
 
 
 
+$routes->get('years', 'Year::index');
+$routes->get('years/(:segment)', 'Year::show/$1');
+$routes->match(['post', 'options'], 'add/year', 'Year::create');
+$routes->put('years/(:segment)', 'Year::update/$1');
+$routes->delete('years/(:segment)', 'Year::delete/$1');
+
+
+
+
 $routes->get('mahasiswa', 'Mahasiswa::index');
 $routes->match(['post', 'options'], 'add/mahasiswa', 'Mahasiswa::create');
 $routes->match(['put', 'options'], 'update/mahasiswa/(:segment)', 'Mahasiswa::update/$1');
@@ -61,11 +70,15 @@ $routes->match(['delete', 'options'], 'delete/dosen/(:segment)', 'Dosen::delete/
 $routes->match(['get', 'options'], 'edit/dosen/(:segment)', 'Dosen::edit/$1');
 $routes->get('update/dosen/(:segment)', 'Dosen::update/$1');
 $routes->get('dosen/(:segment)', 'Dosen::get/$1');
-$routes->get('import/dosen', 'Dosen::import');
-$routes->options('import/dosen', 'Dosen::options');
-$routes->match(['post', 'options'], 'import/dosen', 'Dosen::import');
-$routes->match(['post', 'get'], 'dosen/import', 'Dosen::import');
-$routes->post('dosen/importExcel', 'Dosen::import');
+
+$routes->get('dosenNIDK', 'DosenNIDK::index');
+$routes->match(['post', 'options'], 'add/dosenNIDK', 'DosenNIDK::create');
+$routes->match(['put', 'options'], 'update/dosenNIDK/(:segment)', 'DosenNIDK::update/$1');
+$routes->match(['put', 'options'], 'edit/d osenNIDK/(:segment)', 'DosenNIDK::update/$1');
+$routes->match(['delete', 'options'], 'delete/dosenNIDK/(:segment)', 'DosenNIDK::delete/$1');
+$routes->match(['get', 'options'], 'edit/dosenNIDK/(:segment)', 'DosenNIDK::edit/$1');
+$routes->get('update/dosenNIK/(:segment)', 'DosenNIDK::update/$1');
+$routes->get('dosenNIDK/(:segment)', 'DosenNIDK::get/$1');
 
 $routes->get('iku1', 'Iku1::index');
 $routes->match(['post', 'options'], 'add/iku1', 'Iku1::create');
@@ -117,6 +130,8 @@ $routes->match(['get', 'options'], 'edit/iku2prestasi/(:segment)', 'Iku2prestasi
 $routes->get('update/iku2prestasi/(:segment)', 'Iku2prestasi::update/$1');
 $routes->post('update/iku2prestasi/(:segment)', 'Iku2prestasi::update/$1');
 $routes->get('iku2prestasi/(:segment)', 'Iku2prestasi::get/$1');
+$routes->get('upload/success', 'Iku3prestasi::success');
+$routes->get('uploads/(:any)', 'Iku3prestasi::download/$1');
 
 
 $routes->get('iku3tridharma', 'Iku3tridharma::index');
@@ -181,21 +196,14 @@ $routes->post('dosenpraktisi/importExcel', 'Dosenpraktisi::import');
 
 
 
-$routes->get('iku5', 'Iku5::index');
-$routes->post('iku5', 'Iku5::create');
-$routes->match(['post', 'options'], 'add/iku5', 'Iku5::create');
-$routes->match(['put', 'options'], 'update/iku5/(:segment)', 'Iku5::update/$1');
-$routes->match(['put', 'options'], 'edit/iku5/(:segment)', 'Iku5::update/$1');
-$routes->match(['delete', 'options'], 'delete/iku5/(:segment)', 'Iku5::delete/$1');
-$routes->match(['get', 'options'], 'edit/iku5/(:segment)', 'Iku5::edit/$1');
-$routes->get('update/iku5/(:segment)', 'Iku5::update/$1');
-$routes->get('iku5/(:segment)', 'Iku5::get/$1');
-$routes->get('import/iku4', 'Iku4::import');
-$routes->options('import/iku4', 'Iku4::options');
-$routes->match(['post', 'options'], 'import/iku4', 'Iku4::import');
-$routes->match(['post', 'get'], 'iku4/import', 'Iku4::import');
-$routes->post('iku1/importExcel', 'Iku4::import');
-$routes->get('iku4/rekap', 'Iku4::rekap');
+
+$routes->get('iku5', 'IKU5::index');
+$routes->post('iku5', 'IKU5::create');
+$routes->put('iku5/(:segment)', 'IKU5::update/$1');
+$routes->delete('iku5/(:segment)', 'IKU5::delete/$1');
+$routes->get('iku5/(:segment)', 'IKU5::show/$1');
+$routes->get('upload/success', 'IKU5::success');
+$routes->get('uploads/(:any)', 'IKU5::download/$1');
 
 
 $routes->get('iku6', 'Iku6::index');
@@ -208,6 +216,7 @@ $routes->get('uploads/(:any)', 'Iku6::download/$1');
 $routes->match(['put', 'options'], 'edit/iku6/(:segment)', 'Iku6::edit/$1');
 $routes->get('update/iku6/(:segment)', 'Iku6::update/$1');
 $routes->get('iku6/(:segment)', 'Iku6::get/$1');
+
 
 
 

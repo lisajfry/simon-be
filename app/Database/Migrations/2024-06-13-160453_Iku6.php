@@ -55,12 +55,6 @@ class Iku6 extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'pks' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-            ],
-
-
         ]);
 
 

@@ -8,6 +8,7 @@ use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Iku4Model;
 use App\Models\DosenModel;
+use App\Models\DosenNIDKModel;
 
 class Iku4 extends ResourceController
 {
@@ -45,42 +46,32 @@ class Iku4 extends ResourceController
 
     public function create()
     {
-        helper(['form']);
-
-        // Ambil NIM dari request
+        helper(['form', 'filesystem']);
+        
         $NIDN = $this->request->getVar('NIDN');
-
-        // Periksa apakah NIM valid
         if (!$NIDN) {
             return $this->failValidationError('NIDN is required');
         }
-
-        // Cari data dosen berdasarkan NIDN
+        
         $dosenModel = new DosenModel();
         $dosen = $dosenModel->where('NIDN', $NIDN)->first();
-
-        // Periksa apakah data dosen ditemukan
         if (!$dosen) {
             return $this->failValidationError('No Data Found for the given NIDN');
         }
 
-        $bukti_pdfFile = $this->request->getFile('bukti_pdf');
-        if ($bukti_pdfFile->isValid() && !$bukti_pdfFile->hasMoved()) {
-            $newName = $bukti_pdfFile->getRandomName();
-            $bukti_pdfFile->move(WRITEPATH . 'uploads', $newName);
-
-        // Data untuk disimpan
         $data = [
             'NIDN' => $NIDN,
             'status' => $this->request->getVar('status'),
-            'bukti_pdf' => $newName,
         ];
 
-        // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                unset($data[$key]);
+        if ($file = $this->request->getFile('bukti_pdf')) {
+            if (!$file->isValid() || $file->getMimeType() !== 'application/pdf') {
+                return $this->failValidationError('Invalid PDF file');
             }
+            
+            $newName = $file->getRandomName();
+            $file->move(WRITEPATH . 'uploads', $newName);
+            $data['bukti_pdf'] = $newName;
         }
 
         $model = new Iku4Model();
@@ -96,39 +87,35 @@ class Iku4 extends ResourceController
 
         return $this->respondCreated($response);
     }
-    }
+
     public function update($iku4_id = null)
     {
-        helper(['form']);
-
-        // Ambil NIM dari request
+        helper(['form', 'filesystem']);
+        
         $NIDN = $this->request->getVar('NIDN');
-
-        // Periksa apakah NIM valid
         if (!$NIDN) {
             return $this->failValidationError('NIDN is required');
         }
-
-        // Cari data dosen berdasarkan NIDN
+        
         $dosenModel = new DosenModel();
         $dosen = $dosenModel->where('NIDN', $NIDN)->first();
-
-        // Periksa apakah data dosen ditemukan
         if (!$dosen) {
             return $this->failValidationError('No Data Found for the given NIDN');
         }
 
-        // Data untuk diupdate
         $data = [
             'NIDN' => $NIDN,
             'status' => $this->request->getVar('status'),
         ];
 
-        // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                unset($data[$key]);
+        if ($file = $this->request->getFile('bukti_pdf')) {
+            if (!$file->isValid() || $file->getMimeType() !== 'application/pdf') {
+                return $this->failValidationError('Invalid PDF file');
             }
+            
+            $newName = $file->getRandomName();
+            $file->move(WRITEPATH . 'uploads', $newName);
+            $data['bukti_pdf'] = $newName;
         }
 
         $model = new Iku4Model();
@@ -138,8 +125,13 @@ class Iku4 extends ResourceController
 
         $model->update($iku4_id, $data);
 
-        // Kode untuk menampilkan view setelah update
-        return view('edit_iku4', $data);
+        return $this->respondUpdated([
+            'status' => 200,
+            'error' => null,
+            'messages' => [
+                'success' => 'Data Updated'
+            ]
+        ]);
     }
 
     public function show($iku4_id = null)

@@ -36,10 +36,15 @@ class Iku2kegiatan extends Migration
             'tgl_selesai_kegiatan' =>[
                 'type' => 'DATE',
             ],
+            'NIDN' => [
+                'type'           => 'INT',
+                'constraint'     => 20,
+            ]
         ]);
 
         $this->forge->addPrimaryKey('iku2kegiatan_id');
         $this->forge->addForeignKey('NIM', 'mahasiswa', 'NIM', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('NIDN', 'dosen', 'NIDN', 'CASCADE', 'CASCADE');
         $this->forge->createTable('iku2kegiatan');
     }
 

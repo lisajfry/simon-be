@@ -38,37 +38,28 @@ class Iku2prestasi extends Migration
                 'type'           => 'ENUM',
                 'constraint'     => ['juara1', 'juara2', 'juara3', 'peserta'],
             ],
-            'countries' => [ // Mengganti kolom negara menjadi countries
-                'type'           => 'TEXT', // Gunakan tipe data yang sesuai
-                'null'           => true, // Jika countries boleh kosong, atur ke true
+            'countries' => [
+                'type'           => 'TEXT',
             ],
-            'provinces' => [ // Kolom untuk menyimpan provinsi
-                'type'           => 'TEXT', // Gunakan tipe data yang sesuai
-                'null'           => true, // Jika provinsi boleh kosong, atur ke true
+            'provinces' => [
+                'type'           => 'TEXT',
             ],
             'jmlh_peserta' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => 255,
-                'null'           => true,
             ],
             'jmlh_provinsi_mengikuti' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'null'           => true,
             ],
             'jmlh_negara_mengikuti' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'null'           => true,
             ],
             'sertifikat' => [
                 'type'           => 'TEXT',
-                'null'           => true,
             ],
-            'sk_penugasan' => [
-                'type'           => 'TEXT',
-                'null'           => true,
-            ],
+            
         ]);
 
         $this->forge->addPrimaryKey('iku2prestasi_id');

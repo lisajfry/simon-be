@@ -2,26 +2,26 @@
 
 namespace App\Controllers;
 
-use App\Models\DosenModel;
+use App\Models\DosenNIDKModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 
-class Dosen extends ResourceController
+class DosenNIDK extends ResourceController
 {
     use ResponseTrait;
 
     public function index()
     {
-        $model = new DosenModel();
+        $model = new DosenNIDKModel();
         $data = $model->findAll();
         return $this->respond($data);
     }
 
-    public function get($NIDN = null)
+    public function get($NIDK = null)
     {
-        $model = new DosenModel();
-        $data = $model->find($NIDN);
+        $model = new DosenNIDKModel();
+        $data = $model->find($NIDK);
         if (!$data) {
             return $this->failNotFound('No Data Found');
         } else {
@@ -29,10 +29,10 @@ class Dosen extends ResourceController
         }
     }
 
-    public function show($NIDN = null)
+    public function show($NIDK = null)
     {
-        $model = new DosenModel();
-        $data = $model->find($NIDN);
+        $model = new DosenNIDKModel();
+        $data = $model->find($NIDK);
         if (!$data) {
             return $this->failNotFound('No Data Found');
         } else {
@@ -44,18 +44,18 @@ class Dosen extends ResourceController
     {
         helper(['form']);
         $rules = [
-            'NIDN' => 'required|is_unique[dosen.NIDN]',
+            'NIDK' => 'required|is_unique[dosenNIDK.NIDK]',
             'nama_dosen' => 'required',
         ];
         
         $data = [
-            'NIDN' => $this->request->getVar('NIDN'),
+            'NIDK' => $this->request->getVar('NIDK'),
             'nama_dosen' => $this->request->getVar('nama_dosen'),
         ];
 
         if (!$this->validate($rules)) return $this->fail($this->validator->getErrors(), 400);
         
-        $model = new DosenModel();
+        $model = new DosenNIDKModel();
         $model->save($data);
 
         $response = [
@@ -69,7 +69,7 @@ class Dosen extends ResourceController
         return $this->respondCreated($response);
     }
 
-    public function update($NIDN = null)
+    public function update($NIDK = null)
     {
         helper(['form']);
         $rules = [
@@ -82,12 +82,12 @@ class Dosen extends ResourceController
 
         if (!$this->validate($rules)) return $this->fail($this->validator->getErrors(), 400);
         
-        $model = new DosenModel();
-        $dataToUpdate = $model->find($NIDN);
+        $model = new DosenNIDKModel();
+        $dataToUpdate = $model->find($NIDK);
 
         if (!$dataToUpdate) return $this->failNotFound('No Data Found');
         
-        $model->update($NIDN, $data);
+        $model->update($NIDK, $data);
 
         $response = [
             'status'   => 200,
@@ -100,14 +100,14 @@ class Dosen extends ResourceController
         return $this->respond($response);
     }
 
-    public function delete($NIDN = null)
+    public function delete($NIDK = null)
     {
-        $model = new DosenModel();
-        $dataToDelete = $model->find($NIDN);
+        $model = new DosenNIDKModel();
+        $dataToDelete = $model->find($NIDK);
 
         if (!$dataToDelete) return $this->failNotFound('No Data Found');
         
-        $model->delete($NIDN);
+        $model->delete($NIDK);
 
         $response = [
             'status'   => 200,

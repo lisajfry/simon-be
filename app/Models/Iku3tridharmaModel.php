@@ -12,7 +12,7 @@ class Iku3tridharmaModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIDN', 'surat_sk', 'ptn_tridharma', 'tgl_mulai_tridharma', 'tgl_selesai_tridharma'];
+    protected $allowedFields    = ['NIDN', 'surat_sk','jenis_tridharma','nama_aktivitas_tridharma', 'tempat_tridharma', 'tgl_mulai_tridharma', 'tgl_selesai_tridharma'];
 
     protected bool $allowEmptyInserts = false;
 

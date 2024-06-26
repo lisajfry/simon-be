@@ -8,6 +8,7 @@ use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\Iku2inboundModel;
 use App\Models\MahasiswaModel;
+use App\Models\DosenModel;
 
 class Iku2Inbound extends ResourceController
 {
@@ -41,13 +42,25 @@ class Iku2Inbound extends ResourceController
         helper(['form']);
 
         $NIM = $this->request->getVar('NIM');
+        $NIDN = $this->request->getVar('NIDN');
+
         if (!$NIM) {
             return $this->failValidationError('NIM is required');
+        }
+        if (!$NIDN) {
+            return $this->failValidationError('NIDN is required');
         }
 
         $mahasiswaModel = new MahasiswaModel();
         $mahasiswa = $mahasiswaModel->where('NIM', $NIM)->first();
+
+        $dosenModel = new DosenModel();
+        $dosen = $dosenModel->where('NIDN', $NIDN)->first();
+
         if (!$mahasiswa) {
+            return $this->failValidationError('No Data Found for the given NIM');
+        }
+        if (!$dosen) {
             return $this->failValidationError('No Data Found for the given NIM');
         }
 
@@ -58,16 +71,25 @@ class Iku2Inbound extends ResourceController
 
             $data = [
                 'NIM' => $NIM,
-                'asal_negara' => $this->request->getVar('asal_negara'),
-                'asal_ptn' => $this->request->getVar('asal_ptn'),
+                'ptn_asal' => $this->request->getVar('ptn_asal'),
+                'ptn_pertukaran' => $this->request->getVar('ptn_pertukaran'),
                 'surat_rekomendasi' => $newName,
                 'sks' => $this->request->getVar('sks'),
+                'NIDN' => $NIDN,
                 'tgl_mulai_inbound' => $this->request->getVar('tgl_mulai_inbound'),
                 'tgl_selesai_inbound' => $this->request->getVar('tgl_selesai_inbound'),
             ];
 
+            foreach ($data as $key => $value) {
+                if (empty($value)) {
+                    unset($data[$key]);
+                }
+            }
+
             $model = new Iku2inboundModel();
             $model->save($data);
+
+            
             return redirect()->to('/upload/success');
         } else {
             return $this->failValidationError('Failed to upload surat_rekomendasi file');
@@ -77,14 +99,27 @@ class Iku2Inbound extends ResourceController
     public function update($id_iku2inbound = null)
 {
     $NIM = $this->request->getVar('NIM');
+    $NIDN = $this->request->getVar('NIDN');
+
     if (!$NIM) {
         return $this->failValidationError('NIM is required');
     }
+    if (!$NIDN) {
+        return $this->failValidationError('NIDN is required');
+    }
+
 
     $mahasiswaModel = new MahasiswaModel();
     $mahasiswa = $mahasiswaModel->where('NIM', $NIM)->first();
+
+    $dosenModel = new DosenModel();
+    $dosen = $dosenModel->where('NIDN', $NIDN)->first();
+
     if (!$mahasiswa) {
         return $this->failValidationError('No Data Found for the given NIM');
+    }
+    if (!$dosen) {
+        return $this->failValidationError('No Data Found for the given NIDN');
     }
 
     $surat_rekomendasiFile = $this->request->getFile('surat_rekomendasi');
@@ -94,10 +129,11 @@ class Iku2Inbound extends ResourceController
 
     $data = [
             'NIM' => $NIM,
-            'asal_negara' => $this->request->getVar('asal_negara'),
-            'asal_ptn' => $this->request->getVar('asal_ptn'),
+            'ptn_asal' => $this->request->getVar('ptn_asal'),
+            'ptn_pertukaran' => $this->request->getVar('ptn_pertukaran'),
             'surat_rekomendasi' => $newName,
             'sks' => $this->request->getVar('sks'),
+            'NIDN' => $NIDN,
             'tgl_mulai_inbound' => $this->request->getVar('tgl_mulai_inbound'),
             'tgl_selesai_inbound' => $this->request->getVar('tgl_selesai_inbound'),
     ];

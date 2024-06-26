@@ -1,43 +1,24 @@
 <?php
 
-
 namespace App\Models;
-
 
 use CodeIgniter\Model;
 
-
-class Iku6Model extends Model
+class DosenNIDKModel extends Model
 {
-    protected $table            = 'iku6';
-    protected $primaryKey       = 'iku6_id';
-    protected $useAutoIncrement = true;
+    protected $table            = 'dosenNIDK';
+    protected $primaryKey       = 'NIDK';
+    protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama_mitra', 'nama_kegiatan', 'alamat_mitra', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan', 'kriteria_mitra','mou'];
-
-
-
-
-
-    protected bool $allowEmptyInserts = false;
-
-
-    // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
-
+    protected $allowedFields    = ['NIDK', 'nama_dosen'];
 
     // Validation
     protected $validationRules      = [];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
-
 
     // Callbacks
     protected $allowCallbacks = true;
@@ -49,4 +30,4 @@ class Iku6Model extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-}
+} 

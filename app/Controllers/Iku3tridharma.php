@@ -59,7 +59,9 @@ class Iku3tridharma extends ResourceController
             $data = [
                 'NIDN' => $NIDN,
                 'surat_sk' => $newName,
-                'ptn_tridharma' => $this->request->getVar('ptn_tridharma'),
+                'jenis_tridharma' => $this->request->getVar('jenis_tridharma'),
+                'nama_aktivitas_tridharma' => $this->request->getVar('nama_aktivitas_tridharma'),
+                'tempat_tridharma' => $this->request->getVar('tempat_tridharma'),
                 'tgl_mulai_tridharma' => $this->request->getVar('tgl_mulai_tridharma'),
                 'tgl_selesai_tridharma' => $this->request->getVar('tgl_selesai_tridharma'),
             ];
@@ -92,7 +94,9 @@ class Iku3tridharma extends ResourceController
     $data = [
         'NIDN' => $NIDN,
         'surat_sk' => $newName,
-        'ptn_tridharma' => $this->request->getVar('ptn_tridharma'),
+        'jenis_tridharma' => $this->request->getVar('jenis_tridharma'),
+        'nama_aktivitas_tridharma' => $this->request->getVar('nama_aktivitas_tridharma'),
+        'tempat_tridharma' => $this->request->getVar('tempat_tridharma'),
         'tgl_mulai_tridharma' => $this->request->getVar('tgl_mulai_tridharma'),
         'tgl_selesai_tridharma' => $this->request->getVar('tgl_selesai_tridharma'),
     ];

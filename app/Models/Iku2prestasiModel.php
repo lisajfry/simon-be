@@ -12,7 +12,7 @@ class Iku2prestasiModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'NIDN', 'nama_kompetisi','penyelenggara','tingkat_kompetisi', 'prestasi', 'countries', 'provinces', 'jmlh_peserta', 'jmlh_provinsi_mengikuti', 'jmlh_negara_mengikuti', 'sertifikat', 'sk_penugasan'];
+    protected $allowedFields    = ['NIM', 'NIDN', 'nama_kompetisi','penyelenggara','tingkat_kompetisi', 'prestasi', 'countries', 'provinces', 'jmlh_peserta', 'jmlh_provinsi_mengikuti', 'jmlh_negara_mengikuti', 'sertifikat'];
 
     protected bool $allowEmptyInserts = false;
 

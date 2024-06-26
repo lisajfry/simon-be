@@ -15,7 +15,9 @@ class Iku7Model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['kode_mk','nama_mk', 'tahun', 'semester', 'kelas','jum_bobot','rps'];
+    protected $allowedFields    = ['kode_mk','nama_mk', 'tahun', 'semester', 'kelas','case_method','tb_project','presentase_bobot','rps'];
+
+
 
 
 
