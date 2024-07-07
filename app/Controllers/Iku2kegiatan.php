@@ -14,11 +14,28 @@ class Iku2kegiatan extends ResourceController
 {
     use ResponseTrait;
 
+    // Index with year filter
     public function index()
     {
         $model = new Iku2kegiatanModel();
-        $data = $model->findAll();
+        $year = $this->request->getVar('year');
+
+        if ($year) {
+            $data = $model->where('tahun', $year)->findAll();
+        } else {
+            $data = $model->findAll();
+        }
+
         return $this->respond($data);
+    }
+
+    // Fetch available years
+    public function getFilters()
+    {
+        $model = new Iku2kegiatanModel();
+        $years = $model->select('tahun')->distinct()->findAll();
+
+        return $this->respond(['years' => array_column($years, 'tahun')]);
     }
 
     public function get($iku2kegiatan_id = null)
@@ -61,23 +78,21 @@ class Iku2kegiatan extends ResourceController
         }
 
         if (!$dosen) { 
-            return $this->failValidationError('No Data Found for the given NIM');
+            return $this->failValidationError('No Data Found for the given NIDN');
         }
 
-      
-      // Data untuk disimpan
-$data = [
-    'NIM' => $NIM,
-    'NIDN' => $NIDN,
-    'aktivitas' => $this->request->getVar('aktivitas'),
-    'tempat_kegiatan' => $this->request->getVar('tempat_kegiatan'),
-    'sks' => $this->request->getVar('sks'),
-    'tgl_mulai_kegiatan' => $this->request->getVar('tgl_mulai_kegiatan'), // Tanggal dalam format yang sesuai
-    'tgl_selesai_kegiatan' => $this->request->getVar('tgl_selesai_kegiatan'), // Tanggal dalam format yang sesuai
-];
-
-
-        
+        // Data untuk disimpan
+        $data = [
+            'NIM' => $NIM,
+            'NIDN' => $NIDN,
+            'semester' => $this->request->getVar('semester'),
+            'tahun' => $this->request->getVar('tahun'),
+            'aktivitas' => $this->request->getVar('aktivitas'),
+            'tempat_kegiatan' => $this->request->getVar('tempat_kegiatan'),
+            'sks' => $this->request->getVar('sks'),
+            'tgl_mulai_kegiatan' => $this->request->getVar('tgl_mulai_kegiatan'),
+            'tgl_selesai_kegiatan' => $this->request->getVar('tgl_selesai_kegiatan'),
+        ];
 
         // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
         foreach ($data as $key => $value) {
@@ -104,7 +119,7 @@ $data = [
     {
         helper(['form']);
 
-        // Ambil NIM dari request
+        // Ambil NIM dan NIDN dari request
         $NIM = $this->request->getVar('NIM');
         $NIDN = $this->request->getVar('NIDN');
 
@@ -129,21 +144,21 @@ $data = [
         }
 
         if (!$dosen) {
-            return $this->failValidationError('No Data Found for the given NIM');
+            return $this->failValidationError('No Data Found for the given NIDN');
         }
 
-
-      // Data untuk disimpan
-$data = [
-    'NIM' => $NIM,
-    'NIDN' => $NIDN,
-    'aktivitas' => $this->request->getVar('aktivitas'),
-    'tempat_kegiatan' => $this->request->getVar('tempat_kegiatan'),
-    'sks' => $this->request->getVar('sks'),
-    'tgl_mulai_kegiatan' => $this->request->getVar('tgl_mulai_kegiatan'), // Tanggal dalam format yang sesuai
-    'tgl_selesai_kegiatan' => $this->request->getVar('tgl_selesai_kegiatan'), // Tanggal dalam format yang sesuai
-];
-
+        // Data untuk diupdate
+        $data = [
+            'NIM' => $NIM,
+            'NIDN' => $NIDN,
+            'semester' => $this->request->getVar('semester'),
+            'tahun' => $this->request->getVar('tahun'),
+            'aktivitas' => $this->request->getVar('aktivitas'),
+            'tempat_kegiatan' => $this->request->getVar('tempat_kegiatan'),
+            'sks' => $this->request->getVar('sks'),
+            'tgl_mulai_kegiatan' => $this->request->getVar('tgl_mulai_kegiatan'),
+            'tgl_selesai_kegiatan' => $this->request->getVar('tgl_selesai_kegiatan'),
+        ];
 
         // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
         foreach ($data as $key => $value) {
@@ -187,5 +202,4 @@ $data = [
 
         return $this->respondDeleted(['message' => 'Data Deleted Successfully']);
     }
-
 }

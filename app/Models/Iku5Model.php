@@ -13,11 +13,11 @@ class Iku5Model extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'NIDN', 'NIDK', 'status', 'jenis_karya', 'kategori_karya', 'judul_karya', 
-        'pendanaan', 'kriteria', 'bukti_pendukung', 'tahun'
+        'NIDN', 'NIDK', 'status', 'jenis_karya', 'kategori_karya', 
+        'judul_karya', 'pendanaan', 'kriteria', 'bukti_pendukung', 'tahun'
     ];
 
-    protected bool $allowEmptyInserts = true; // Allow empty inserts
+    protected bool $allowEmptyInserts = false;
 
     // Dates
     protected $useTimestamps = false;
@@ -43,14 +43,13 @@ class Iku5Model extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // Method to get data with the name of the lecturer
-    public function getIku5WithNamaDosen()
+    // Method to get data with associated dosen and years
+    public function getIku5WithDetails()
     {
-        // Join between iku5 table and dosen table
-        return $this->db->table('iku5')
-                        ->select('iku5.*, dosen.nama_dosen, dosenNIDK.nama_dosen as nama_dosenNIDK')
-                        ->join('dosen', 'dosen.NIDN = iku5.NIDN')
-                        ->join('dosenNIDK', 'dosenNIDK.NIDK = iku5.NIDK')
+        return $this->db->table($this->table)
+                        ->select('iku5.*, dosen.nama_dosen, dosenNIDK.nama_dosen')
+                        ->join('dosen', 'dosen.NIDN = iku5.NIDN', 'left')
+                        ->join('dosenNIDK', 'dosenNIDK.NIDK = iku5.NIDK', 'left')
                         ->get()
                         ->getResultArray();
     }

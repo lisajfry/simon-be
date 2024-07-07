@@ -15,7 +15,8 @@ class Iku6Model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nama_mitra', 'nama_kegiatan', 'alamat_mitra', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan', 'kriteria_mitra','mou'];
+    protected $allowedFields    = ['nama_mitra', 'nama_kegiatan', 'alamat_mitra','tahun', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan', 'kriteria_mitra','mou'];
+
 
 
 

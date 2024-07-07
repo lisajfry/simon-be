@@ -13,11 +13,28 @@ class Iku1 extends ResourceController
 {
     use ResponseTrait;
 
+    // Index with year filter
     public function index()
     {
         $model = new Iku1Model();
-        $data = $model->findAll();
+        $year = $this->request->getVar('year');
+
+        if ($year) {
+            $data = $model->where('tahun', $year)->findAll();
+        } else {
+            $data = $model->findAll();
+        }
+
         return $this->respond($data);
+    }
+
+    // Fetch available years
+    public function getFilters()
+    {
+        $model = new Iku1Model();
+        $years = $model->select('tahun')->distinct()->findAll();
+
+        return $this->respond(['years' => array_column($years, 'tahun')]);
     }
 
     public function get($iku1_id = null)
@@ -30,23 +47,6 @@ class Iku1 extends ResourceController
             return $this->respond($data);
         }
     }
-
-    // Mahasiswa.php (Controller)
-
-            public function getNamaMahasiswa($NIM = null)
-            {
-                $mahasiswaModel = new MahasiswaModel();
-                $mahasiswa = $mahasiswaModel->find($NIM);
-                
-                if (!$mahasiswa) {
-                    return $this->failNotFound('No Data Found');
-                } else {
-                    return $this->respond(['nama_mahasiswa' => $mahasiswa['nama_mahasiswa']]);
-                }
-            }
-
-
-    
 
     public function create()
     {
@@ -74,7 +74,8 @@ class Iku1 extends ResourceController
             'NIM' => $NIM,
             'status' => $this->request->getVar('status'),
             'gaji' => $this->request->getVar('gaji'),
-            'masa_tunggu' => $this->request->getVar('masa_tunggu')
+            'masa_tunggu' => $this->request->getVar('masa_tunggu'),
+            'tahun' => $this->request->getVar('tahun')
         ];
 
         // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
@@ -124,7 +125,8 @@ class Iku1 extends ResourceController
             'NIM' => $NIM,
             'status' => $this->request->getVar('status'),
             'gaji' => $this->request->getVar('gaji'),
-            'masa_tunggu' => $this->request->getVar('masa_tunggu')
+            'masa_tunggu' => $this->request->getVar('masa_tunggu'),
+            'tahun' => $this->request->getVar('tahun')
         ];
 
         // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
@@ -201,34 +203,34 @@ class Iku1 extends ResourceController
             $mahasiswaModel = new MahasiswaModel();
 
             // Iterasi melalui baris-baris pada file Excel, dimulai dari baris kedua
-           // Iterasi melalui baris-baris pada file Excel, dimulai dari baris kedua
-for ($row = 5; $row <= $highestRow; $row++) {
-    // Ambil data dari kolom-kolom yang sesuai
-    $NIM = $sheet->getCell('A' . $row)->getValue();
-    $status = $sheet->getCell('B' . $row)->getValue();
-    $gaji = $sheet->getCell('C' . $row)->getValue();
-    $masa_tunggu = $sheet->getCell('D' . $row)->getValue();
+            for ($row = 5; $row <= $highestRow; $row++) {
+                // Ambil data dari kolom-kolom yang sesuai
+                $NIM = $sheet->getCell('A' . $row)->getValue();
+                $status = $sheet->getCell('B' . $row)->getValue();
+                $gaji = $sheet->getCell('C' . $row)->getValue();
+                $masa_tunggu = $sheet->getCell('D' . $row)->getValue();
+                $tahun = $sheet->getCell('E' . $row)->getValue();
 
-    // Cek apakah NIM sudah ada di tabel mahasiswa
-    $mahasiswa = $mahasiswaModel->where('NIM', $NIM)->first();
+                // Cek apakah NIM sudah ada di tabel mahasiswa
+                $mahasiswa = $mahasiswaModel->where('NIM', $NIM)->first();
 
-    if ($mahasiswa) {
-        // Siapkan data untuk disimpan ke dalam model iku1
-        $data = [
-            'NIM' => $NIM,
-            'status' => $status,
-            'gaji' => $gaji,
-            'masa_tunggu' => $masa_tunggu,
-        ];
+                if ($mahasiswa) {
+                    // Siapkan data untuk disimpan ke dalam model iku1
+                    $data = [
+                        'NIM' => $NIM,
+                        'status' => $status,
+                        'gaji' => $gaji,
+                        'masa_tunggu' => $masa_tunggu,
+                        'tahun' => $tahun
+                    ];
 
-        // Simpan data ke dalam tabel iku1
-        $iku1Model->insert($data);
-    } else {
-        // NIM tidak ditemukan di tabel mahasiswa
-        // Anda bisa menangani kasus ini sesuai kebutuhan
-    }
-}
-
+                    // Simpan data ke dalam tabel iku1
+                    $iku1Model->insert($data);
+                } else {
+                    // NIM tidak ditemukan di tabel mahasiswa
+                    // Anda bisa menangani kasus ini sesuai kebutuhan
+                }
+            }
 
             // Berhasil mengimpor data
             return $this->respond(['message' => 'Data from Excel file imported successfully'], ResponseInterface::HTTP_CREATED);

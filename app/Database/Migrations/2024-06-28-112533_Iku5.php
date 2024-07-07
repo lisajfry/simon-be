@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Database\Migrations;
+namespace App\Database\Migrations; 
 
 use CodeIgniter\Database\Migration;
 
@@ -16,22 +16,24 @@ class Iku5 extends Migration
                 'auto_increment' => true,
             ],
             'NIDN' => [
-                'type' => 'INT',
+                'type' => 'INT', 
                 'constraint' => 20,
-                'null' => true, // Allow NIDN to be NULL
+                'null' => true,
             ],
             'NIDK' => [
                 'type' => 'VARCHAR',
                 'constraint' => 20,
-                'null' => true, // Allow NIDK to be NULL
+                'null' => true,
             ],
             'status' => [
                 'type' => 'ENUM',
                 'constraint' => ['mendapatkan rekognisi internasional', 'diterapkan di masyarakat/industri/pemerintah'],
-            ],
+                'null' => false,
+            ], 
             'jenis_karya' => [
                 'type' => 'ENUM',
                 'constraint' => ['Karya Tulis Ilmiah', 'Karya Terapan', 'Karya Seni'],
+                'null' => false,
             ],
             'kategori_karya' => [
                 'type' => 'ENUM',
@@ -41,14 +43,17 @@ class Iku5 extends Migration
                     'Karya Seni Desain', 'Karya Seni Novel', 'Karya Seni Sajak',
                     'Karya Seni Puisi', 'Karya Seni Notasi Musik', 'Karya Seni Preservasi'
                 ],
+                'null' => false,
             ],
             'judul_karya' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
+                'null' => false,
             ],
             'pendanaan' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
+                'null' => false,
             ],
             'kriteria' => [
                 'type' => 'ENUM',
@@ -61,19 +66,23 @@ class Iku5 extends Migration
                     'melaksanakan dan/atau menghasilkan karya seni atau kegiatan seni pada tingkat Nasional', 'melaksanakan penelitian di bidang seni yang dipatenkan atau dipublikasikan dalam seminar nasional',
                     'melaksanakan dan/atau menghasilkan karya seni atau kegiatan seni pada tingkat lokal', 'membuat rancangan karya seni atau kegiatan seni tingkat nasional', 'melaksanakan penelitian di bidang seni yang tidak dipatenkan atau dipublikasikan'
                 ],
+                'null' => false,
             ],
             'bukti_pendukung' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
+                'null' => false,
             ],
             'tahun' => [
-                'type' => 'YEAR',
+                'type' => 'INT',
+                'constraint' => 4,
             ],
         ]);
 
         $this->forge->addKey('iku5_id', true);
         $this->forge->addForeignKey('NIDN', 'dosen', 'NIDN', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('NIDK', 'dosenNIDK', 'NIDK', 'CASCADE', 'CASCADE');
+
         $this->forge->createTable('iku5');
     }
 

@@ -30,6 +30,12 @@ class Iku1 extends Migration
             'masa_tunggu' => [
                 'type' => 'ENUM("kurang dari 6 bulan","antara 6 sampai 12bulan")',
                 'null' => false,
+                
+            ],
+            'tahun' => [
+                'type' => 'INT',
+                'constraint' => 4,
+                
             ],
         ]);
 

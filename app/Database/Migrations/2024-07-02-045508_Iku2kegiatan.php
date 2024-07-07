@@ -18,9 +18,17 @@ class Iku2kegiatan extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 20,
             ],
+            'semester' => [
+                'type' => 'ENUM("4","5")',
+                'null' => false,
+            ],
+            'tahun' => [
+                'type' => 'INT',
+                'constraint' => 4,
+            ],
             'aktivitas' => [
                 'type'           => 'ENUM',
-                'constraint'     => ['magang/praktek kerja ', 'pertukaran pelajar', 'proyek kemanusiaan', 'mengajar di sekolah', 'studi/proyek independen', 'proyek di desa/kkn', 'kegiatan wirausaha', 'penelitian atau riset'],
+                'constraint'     => ['magang/praktek kerja ', 'proyek kemanusiaan', 'mengajar di sekolah', 'studi/proyek independen', 'proyek di desa/kkn', 'kegiatan wirausaha', 'penelitian atau riset'],
             ],
             'tempat_kegiatan' => [
                 'type'           => 'VARCHAR',

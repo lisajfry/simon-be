@@ -18,6 +18,11 @@ class Iku2prestasi extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 20,
             ],
+
+            'tahun' => [
+                'type' => 'INT',
+                'constraint' => 4,
+            ],
             'NIDN' => [
                 'type'           => 'INT',
                 'constraint'     => 20,

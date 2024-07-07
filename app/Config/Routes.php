@@ -8,6 +8,10 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 
+
+
+
+
 $routes->get('user', 'User::index');
 $routes->match(['post', 'options'], 'add/user', 'User::create');
 $routes->match(['put', 'options'], 'update/user/(:segment)', 'User::update/$1');
@@ -164,6 +168,12 @@ $routes->get('iku3praktisi/(:segment)', 'Iku3praktisi::get/$1');
 
 
 $routes->get('iku4', 'Iku4::index');
+$routes->get('/iku4', 'Iku4::index');
+$routes->get('/iku4/(:num)', 'Iku4::get/$1');
+$routes->get('/dosen', 'Dosen::index');
+$routes->get('/dosenNIDK', 'DosenNIDK::index');
+$routes->get('/berkassertifikasi', 'BerkasSertifikasi::index');
+$routes->post('/update/iku4/(:num)', 'Iku4::update/$1');
 $routes->post('iku4', 'Iku4::create');
 $routes->match(['post', 'options'], 'add/iku4', 'Iku4::create');
 $routes->match(['put', 'options'], 'update/iku4/(:segment)', 'Iku4::update/$1');
@@ -176,8 +186,8 @@ $routes->get('import/iku4', 'Iku4::import');
 $routes->options('import/iku4', 'Iku4::options');
 $routes->match(['post', 'options'], 'import/iku4', 'Iku4::import');
 $routes->match(['post', 'get'], 'iku4/import', 'Iku4::import');
-$routes->post('iku1/importExcel', 'Iku4::import');
 $routes->get('iku4/rekap', 'Iku4::rekap');
+$routes->post('update/iku4/(:segment)', 'Iku4::update/$1');
 
 
 $routes->get('dosenpraktisi', 'Dosenpraktisi::index');
@@ -196,14 +206,19 @@ $routes->post('dosenpraktisi/importExcel', 'Dosenpraktisi::import');
 
 
 
+$routes->get('iku5', 'Iku5::index');
+$routes->match(['post', 'options'], 'add/iku5', 'Iku5::create');
+$routes->match(['put', 'options'], 'update/iku5/(:segment)', 'Iku5::update/$1');
+$routes->match(['delete', 'options'], 'delete/iku5/(:segment)', 'Iku5::delete/$1');
+$routes->get('iku5/(:segment)', 'Iku5::get/$1');
+$routes->get('upload/success', 'Iku5::success');
+$routes->get('uploads/(:any)', 'Iku5::download/$1');
+$routes->match(['put', 'options'], 'edit/iku5/(:segment)', 'Iku5::edit/$1');
+$routes->get('update/iku5/(:segment)', 'Iku5::update/$1');
+$routes->post('update/iku5/(:segment)', 'Iku5::update/$1');
+$routes->get('iku5/(:segment)', 'Iku5::get/$1');
 
-$routes->get('iku5', 'IKU5::index');
-$routes->post('iku5', 'IKU5::create');
-$routes->put('iku5/(:segment)', 'IKU5::update/$1');
-$routes->delete('iku5/(:segment)', 'IKU5::delete/$1');
-$routes->get('iku5/(:segment)', 'IKU5::show/$1');
-$routes->get('upload/success', 'IKU5::success');
-$routes->get('uploads/(:any)', 'IKU5::download/$1');
+
 
 
 $routes->get('iku6', 'Iku6::index');
@@ -230,9 +245,11 @@ $routes->get('uploads/(:any)', 'Iku7::download/$1');
 $routes->match(['put', 'options'], 'edit/iku7/(:segment)', 'Iku7::edit/$1');
 $routes->get('update/iku7/(:segment)', 'Iku7::update/$1');
 $routes->get('iku7/(:segment)', 'Iku7::get/$1');
+$routes->get('iku7/getFilters', 'Iku7::getFilters');
 
 
 
+$routes->resource('rekapitulasi');
 $routes->get('rekap', 'Rekap::index');
 $routes->match(['post', 'options'], 'add/rekap', 'Rekap::create');
 $routes->match(['put', 'options'], 'update/rekap/(:segment)', 'Rekap::update/$1');

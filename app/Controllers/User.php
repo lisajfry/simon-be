@@ -88,8 +88,14 @@ class User extends BaseController
             return $this->fail('Invalid email or password', 401);
         }
 
-        // Jika email dan password cocok, berikan respons berhasil
-        return $this->respond(['message' => 'Login successful'], 200);
+        // Jika email dan password cocok, kembalikan data user dan role
+        return $this->respond([
+            'message' => 'Login successful',
+            'user' => [
+                'email' => $user['email'],
+                'role' => $user['role']
+            ]
+        ], 200);
     }
 
     public function update($id_user = null)

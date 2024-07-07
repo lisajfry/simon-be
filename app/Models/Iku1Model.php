@@ -12,7 +12,7 @@ class Iku1Model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'status', 'gaji', 'masa_tunggu'];
+    protected $allowedFields    = ['NIM', 'status', 'gaji', 'masa_tunggu','tahun'];
 
     protected bool $allowEmptyInserts = false;
 

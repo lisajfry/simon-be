@@ -12,7 +12,7 @@ class Iku3praktisiModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIDN', 'surat_sk', 'instansi_praktisi', 'tgl_mulai_praktisi', 'tgl_selesai_praktisi'];
+    protected $allowedFields    = ['NIDN','tahun',  'surat_sk', 'instansi_praktisi', 'tgl_mulai_praktisi', 'tgl_selesai_praktisi'];
 
     protected bool $allowEmptyInserts = false;
 

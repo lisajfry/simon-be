@@ -1,8 +1,11 @@
 <?php
 
+
 namespace App\Models;
 
+
 use CodeIgniter\Model;
+
 
 class Iku4Model extends Model
 {
@@ -12,9 +15,11 @@ class Iku4Model extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIDN', 'status'];
+    protected $allowedFields    = ['NIDN', 'NIDK', 'id_berkas', 'tanggal', 'status', 'bukti_pdf'];
+
 
     protected bool $allowEmptyInserts = false;
+
 
     // Dates
     protected $useTimestamps = false;
@@ -23,11 +28,13 @@ class Iku4Model extends Model
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
+
     // Validation
     protected $validationRules      = [];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
+
 
     // Callbacks
     protected $allowCallbacks = true;
@@ -40,6 +47,7 @@ class Iku4Model extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+
     // Method to get data by NIM
     public function getIku4WithNamaDosen()
     {
@@ -50,7 +58,9 @@ class Iku4Model extends Model
                         ->get()
                         ->getResultArray();
     }
-    public function getIku4WithNamaDosenpraktisi()
+
+
+    public function getIku4WithNamaDosenNIDK()
     {
         // Lakukan join antara tabel iku1 dan mahasiswa
         return $this->db->table('iku4')
@@ -60,4 +70,14 @@ class Iku4Model extends Model
                         ->getResultArray();
     }
 
+
+    public function getIku4WithNamaBerkas()
+    {
+        // Lakukan join antara tabel iku1 dan mahasiswa
+        return $this->db->table('iku4')
+                        ->select('iku4.*, berkassertifikasi.nama_berkas')
+                        ->join('berkassertifikasi', 'berkassertifikasi.id_berkas = iku4.id_berkas')
+                        ->get()
+                        ->getResultArray();
+    }
 }

@@ -18,6 +18,14 @@ class Iku2Inbound extends Migration
                 'type'           => 'VARCHAR',
                 'constraint'     => 20,
             ],
+            'semester' => [
+                'type' => 'ENUM("4","5")',
+                'null' => false,
+            ],
+            'tahun' => [
+                'type' => 'INT',
+                'constraint' => 4,
+            ],
             'ptn_asal' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => 255,

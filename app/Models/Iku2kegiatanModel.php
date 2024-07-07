@@ -12,7 +12,7 @@ class Iku2kegiatanModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'aktivitas', 'tempat_kegiatan', 'sks', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan', 'NIDN'];
+    protected $allowedFields    = ['NIM', 'semester','tahun','aktivitas', 'tempat_kegiatan', 'sks', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan', 'NIDN'];
 
     protected bool $allowEmptyInserts = false;
 

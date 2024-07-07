@@ -12,7 +12,7 @@ class Iku2inboundModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['NIM', 'ptn_asal', 'ptn_pertukaran','surat_rekomendasi', 'sks','NIDN', 'tgl_mulai_inbound', 'tgl_selesai_inbound'];
+    protected $allowedFields    = ['NIM', 'semester', 'tahun','ptn_asal', 'ptn_pertukaran','surat_rekomendasi', 'sks','NIDN', 'tgl_mulai_inbound', 'tgl_selesai_inbound'];
 
     protected bool $allowEmptyInserts = false;
 

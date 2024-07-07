@@ -1,11 +1,5 @@
 <?php
-
-
-
-
 namespace App\Controllers;
-
-
 
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -24,11 +18,38 @@ class Iku7 extends ResourceController
     public function index()
     {
         $model = new Iku7Model();
-        $data = $model->findAll();
+        $year = $this->request->getVar('year');
+        $semester = $this->request->getVar('semester');
+
+
+        if ($year && $semester) {
+            $data = $model->where(['tahun' => $year, 'semester' => $semester])->findAll();
+        } elseif ($year) {
+            $data = $model->where('tahun', $year)->findAll();
+        } elseif ($semester) {
+            $data = $model->where('semester', $semester)->findAll();
+        } else {
+            $data = $model->findAll();
+        }
+
+
         return $this->respond($data);
     }
 
 
+    // Fetch available years and semesters
+    public function getFilters()
+    {
+        $model = new Iku7Model();
+        $years = $model->select('tahun')->distinct()->findAll();
+        $semesters = $model->select('semester')->distinct()->findAll();
+
+
+        return $this->respond([
+            'years' => array_column($years, 'tahun'),
+            'semesters' => array_column($semesters, 'semester')
+        ]);
+    }
 
 
     // GET
@@ -44,8 +65,6 @@ class Iku7 extends ResourceController
     }
 
 
-
-
     // SHOW
     public function show($iku7_id = null)
     {
@@ -58,12 +77,12 @@ class Iku7 extends ResourceController
     }
 
 
-
-
    // CREATE
 public function create()
 {
     $model = new Iku7Model();
+
+
 
 
     // File Upload Handling
@@ -97,8 +116,6 @@ public function create()
 
 
     $model->insert($data);
-
-
     $response = [
         'status' => 201,
         'error' => null,
@@ -147,8 +164,6 @@ public function update($iku7_id = null)
 
 
     $model->update($iku7_id, $data);
-
-
     $response = [
         'status' => 200,
         'error' => null,
@@ -162,15 +177,11 @@ public function update($iku7_id = null)
 }
 
 
-
-
     // DELETE
     public function delete($iku7_id = null)
     {
         $model = new Iku7Model();
         $model->delete($iku7_id);
-
-
 
 
         $response = [
@@ -182,8 +193,8 @@ public function update($iku7_id = null)
         ];
 
 
-
-
         return $this->respondDeleted($response);
     }
 }
+
+

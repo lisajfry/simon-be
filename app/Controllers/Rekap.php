@@ -1,139 +1,34 @@
-<?php
+<?php namespace App\Controllers;
 
-namespace App\Controllers;
-
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\RekapitulasiModel;
 use CodeIgniter\RESTful\ResourceController;
-use CodeIgniter\API\ResponseTrait;
-use App\Models\RekapModel;
 
-
-class Rekap extends ResourceController
+class Rekapitulasi extends ResourceController
 {
-    use ResponseTrait;
+    protected $rekapitulasiModel;
+
+    public function __construct()
+    {
+        $this->rekapitulasiModel = new RekapitulasiModel();
+    }
 
     public function index()
     {
-        $model = new RekapModel();
-        $data = $model->findAll();
+        $tahun = $this->request->getGet('tahun');
+        $data = $this->rekapitulasiModel->getByYear($tahun);
         return $this->respond($data);
     }
 
-    public function get($rekap_id = null)
-    {
-        $model = new RekapModel();
-        $data = $model->find($rekap_id);
-        if (!$data) {
-            return $this->failNotFound('No Data Found');
-        } else {
-            return $this->respond($data);
-        }
-    }
-
-    // Mahasiswa.php (Controller)
-
-            public function getNamaMahasiswa($NIM = null)
-            {
-                $mahasiswaModel = new MahasiswaModel();
-                $mahasiswa = $mahasiswaModel->find($NIM);
-                
-                if (!$mahasiswa) {
-                    return $this->failNotFound('No Data Found');
-                } else {
-                    return $this->respond(['nama_mahasiswa' => $mahasiswa['nama_mahasiswa']]);
-                }
-            }
-
-
-    
-
     public function create()
     {
-        helper(['form']);
-
-        // Data untuk disimpan
-        $data = [
-            'indikator' => $this->request->getVar('indikator'),
-            'target' => $this->request->getVar('target')
-        ];
-
-        // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-        foreach ($data as $key => $value) {
-            if (empty($value)) {
-                unset($data[$key]);
-            }
+        $data = $this->request->getPost();
+        $indicators = ['IKU 1', 'IKU 2', 'IKU 3', 'IKU 4', 'IKU 5', 'IKU 6', 'IKU 7'];
+        foreach ($indicators as $index => $indicator) {
+            $this->rekapitulasiModel->updateOrInsert(
+                ['tahun' => $data['tahun'], 'indikator' => $indicator],
+                ['target' => $data['targets'][$index], 'capaian' => $data['capaian'][$index]]
+            );
         }
-
-        $model = new RekapModel();
-        $model->save($data);
-
-        $response = [
-            'status'   => 201,
-            'error'    => null,
-            'messages' => [
-                'success' => 'Data Inserted'
-            ]
-        ];
-
-        return $this->respondCreated($response);
+        return $this->respondCreated(['message' => 'Rekapitulasi berhasil disimpan']);
     }
-
-    public function update($rekap_id = null)
-{
-    helper(['form']);
-
-    // Data untuk diupdate
-    $data = [
-        'indikator' => $this->request->getVar('indikator'),
-        'target' => $this->request->getVar('target')
-    ];
-
-    // Periksa apakah bidang-bidang yang diperlukan ada yang kosong
-    foreach ($data as $key => $value) {
-        if (empty($value)) {
-            unset($data[$key]);
-        }
-    }
-
-    $model = new RekapModel();
-    $dataToUpdate = $model->find($rekap_id);
-
-    if (!$dataToUpdate) return $this->failNotFound('No Data Found');
-
-    // Periksa apakah data yang diperbarui berbeda dari data yang ada
-    if ($dataToUpdate['indikator'] == $data['indikator'] && $dataToUpdate['target'] == $data['target']) {
-        return $this->respond(['message' => 'No changes made']);
-    }
-
-    $model->update($rekap_id, $data);
-
-}
-
-
-    public function show($rekap_id = null)
-    {
-        $model = new RekapModel();
-        $data = $model->find($rekap_id);
-        if (!$data) {
-            return $this->failNotFound('No Data Found');
-        } else {
-            return $this->respond($data);
-        }
-    }
-
-    public function delete($rekap_id = null)
-    {
-        $model = new RekapModel();
-        $data = $model->find($rekap_id);
-
-        if (!$data) {
-            return $this->failNotFound('No Data Found');
-        }
-
-        $model->delete($rekap_id);
-
-        return $this->respondDeleted(['message' => 'Data Deleted Successfully']);
-    }
-
 }

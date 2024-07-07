@@ -1,11 +1,7 @@
 <?php
 
 
-
-
 namespace App\Controllers;
-
-
 
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -22,13 +18,30 @@ class Iku6 extends ResourceController
     use ResponseTrait;
 
 
-
-
     public function index()
     {
         $model = new Iku6Model();
-        $data = $model->findAll();
+        $year = $this->request->getVar('year');
+
+
+        if ($year) {
+            $data = $model->where(['tahun' => $year])->findAll();
+        } else {
+            $data = $model->findAll();
+        }
         return $this->respond($data);
+    }
+
+
+    public function getFilters()
+    {
+        $model = new Iku6Model();
+        $years = $model->select('tahun')->distinct()->findAll();
+
+
+        return $this->respond([
+            'years' => array_column($years, 'tahun'),
+        ]);
     }
 
 
@@ -46,8 +59,6 @@ class Iku6 extends ResourceController
     }
 
 
-
-
     // SHOW
     public function show($iku6_id = null)
     {
@@ -62,9 +73,15 @@ class Iku6 extends ResourceController
 
 
 
+
+
+
+
     public function create()
 {
     $model = new Iku6Model();
+
+
 
 
     $file = $this->request->getFile('mou');
@@ -77,10 +94,13 @@ class Iku6 extends ResourceController
     }
 
 
+
+
     $data = [
         'nama_mitra' => $this->request->getPost('nama_mitra'),
         'nama_kegiatan' => $this->request->getPost('nama_kegiatan'),
         'alamat_mitra' => $this->request->getPost('alamat_mitra'),
+        'tahun' => $this->request->getPost('tahun'),
         'tgl_mulai_kegiatan' => $this->request->getPost('tgl_mulai_kegiatan'),
         'tgl_selesai_kegiatan' => $this->request->getPost('tgl_selesai_kegiatan'),
         'kriteria_mitra' => $this->request->getPost('kriteria_mitra'),
@@ -88,7 +108,11 @@ class Iku6 extends ResourceController
     ];
 
 
+
+
     $model->insert($data);
+
+
 
 
     $response = [
@@ -100,8 +124,12 @@ class Iku6 extends ResourceController
     ];
 
 
+
+
     return $this->respondCreated($response);
 }
+
+
 
 
 public function update($iku6_id = null)
@@ -112,10 +140,13 @@ public function update($iku6_id = null)
         'nama_mitra' => $this->request->getPost('nama_mitra'),
         'nama_kegiatan' => $this->request->getPost('nama_kegiatan'),
         'alamat_mitra' => $this->request->getPost('alamat_mitra'),
+        'tahun' => $this->request->getPost('tahun'),
         'tgl_mulai_kegiatan' => $this->request->getPost('tgl_mulai_kegiatan'),
         'tgl_selesai_kegiatan' => $this->request->getPost('tgl_selesai_kegiatan'),
         'kriteria_mitra' => $this->request->getPost('kriteria_mitra'),
     ];
+
+
 
 
      // Handle file upload
@@ -144,10 +175,20 @@ public function update($iku6_id = null)
 
 
 
+
+
+
+
+
+
     public function delete($iku6_id = null)
     {
         $model = new Iku6Model();
         $model->delete($iku6_id);
+
+
+
+
 
 
 
@@ -163,8 +204,16 @@ public function update($iku6_id = null)
 
 
 
+
+
+
+
         return $this->respondDeleted($response);
     }
+
+
+
+
 
 
 

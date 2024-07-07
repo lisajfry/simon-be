@@ -20,7 +20,7 @@ class User extends Migration
                 'constraint' => '100',
             ],
             'password' => [
-                'type'       => 'VARCHAR',
+                'type'       => 'VARCHAR', 
                 'constraint' => '255',
             ],
             'role' => [

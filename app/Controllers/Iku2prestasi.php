@@ -13,10 +13,18 @@ class Iku2prestasi extends ResourceController
 {
     use ResponseTrait;
 
+    // Index with year filter
     public function index()
     {
         $model = new Iku2prestasiModel();
-        $data = $model->findAll();
+        $year = $this->request->getVar('year');
+
+        if ($year) {
+            $data = $model->where('tahun', $year)->findAll();
+        } else {
+            $data = $model->findAll();
+        }
+
         return $this->respond($data);
     }
 
@@ -30,7 +38,6 @@ class Iku2prestasi extends ResourceController
             return $this->respond($data);
         }
     }
-
 
     public function create()
     {
@@ -61,50 +68,47 @@ class Iku2prestasi extends ResourceController
         }
 
         if (!$dosen) {
-            return $this->failValidationError('No Data Found for the given NIM');
+            return $this->failValidationError('No Data Found for the given NIDN');
         }
-
 
         $sertifikatFile = $this->request->getFile('sertifikat');
         if ($sertifikatFile->isValid() && !$sertifikatFile->hasMoved()) {
             $newName = $sertifikatFile->getRandomName();
             $sertifikatFile->move(WRITEPATH . 'uploads', $newName);
+        
+            // Data untuk disimpan
+            $data = [
+                'NIM' => $NIM,
+                'NIDN' => $NIDN,
+                'tahun' => $this->request->getVar('tahun'),
+                'nama_kompetisi' => $this->request->getVar('nama_kompetisi'),
+                'penyelenggara' => $this->request->getVar('penyelenggara'),
+                'tingkat_kompetisi' => $this->request->getVar('tingkat_kompetisi'),
+                'jmlh_peserta' => $this->request->getVar('jmlh_peserta'),
+                'prestasi' => $this->request->getVar('prestasi'),
+                'countries' => json_encode($this->request->getVar('countries')),
+                'provinces' => json_encode($this->request->getVar('provinces')),
+                'jmlh_negara_mengikuti' => $this->request->getVar('jmlh_negara_mengikuti'),
+                'jmlh_provinsi_mengikuti' => $this->request->getVar('jmlh_provinsi_mengikuti'),
+                'sertifikat' => $newName,
+                // tambahkan field lainnya sesuai kebutuhan
+            ];
 
-       
+            $model = new Iku2prestasiModel();
+            $model->save($data);
 
-        // Data untuk disimpan
-        $data = [
-            'NIM' => $NIM,
-            'NIDN' => $NIDN,
-            'nama_kompetisi' => $this->request->getVar('nama_kompetisi'),
-            'penyelenggara' => $this->request->getVar('penyelenggara'),
-            'tingkat_kompetisi' => $this->request->getVar('tingkat_kompetisi'),
-            'jmlh_peserta' => $this->request->getVar('jmlh_peserta'),
-            'prestasi' => $this->request->getVar('prestasi'),
-            'countries' => json_encode($this->request->getVar('countries')),
-            'provinces' => json_encode($this->request->getVar('provinces')),
-            'jmlh_negara_mengikuti' => $this->request->getVar('jmlh_negara_mengikuti'),
-            'jmlh_provinsi_mengikuti' => $this->request->getVar('jmlh_provinsi_mengikuti'),
-            'sertifikat' => $newName,
-            
-            // tambahkan field lainnya sesuai kebutuhan
-        ];
+            $response = [
+                'status' => 201,
+                'error' => null,
+                'messages' => [
+                    'success' => 'Data Inserted'
+                ]
+            ];
 
-        $model = new Iku2prestasiModel();
-        $model->save($data);
-
-        $response = [
-            'status' => 201,
-            'error' => null,
-            'messages' => [
-                'success' => 'Data Inserted'
-            ]
-        ];
-
-        return $this->respondCreated($response);
-    }
+            return $this->respondCreated($response);
         }
-    
+    }
+
     public function update($id = null)
     {
         helper(['form']);
@@ -134,7 +138,7 @@ class Iku2prestasi extends ResourceController
         }
 
         if (!$dosen) {
-            return $this->failValidationError('No Data Found for the given NIM');
+            return $this->failValidationError('No Data Found for the given NIDN');
         }
 
         $sertifikatFile = $this->request->getFile('sertifikat');
@@ -142,56 +146,53 @@ class Iku2prestasi extends ResourceController
             $newName = $sertifikatFile->getRandomName();
             $sertifikatFile->move(WRITEPATH . 'uploads', $newName);
         
-        
-        // Data untuk disimpan
-        $data = [
-            'NIM' => $NIM,
-            'NIDN' => $NIDN,
-            'nama_kompetisi' => $this->request->getVar('nama_kompetisi'),
-            'penyelenggara' => $this->request->getVar('penyelenggara'), 
-            'tingkat_kompetisi' => $this->request->getVar('tingkat_kompetisi'),
-            'jmlh_peserta' => $this->request->getVar('jmlh_peserta'),
-            'prestasi' => $this->request->getVar('prestasi'),
-            'countries' => json_encode($this->request->getVar('countries')),
-            'provinces' => json_encode($this->request->getVar('provinces')),
-            'jmlh_negara_mengikuti' => $this->request->getVar('jmlh_negara_mengikuti'),
-            'jmlh_provinsi_mengikuti' => $this->request->getVar('jmlh_provinsi_mengikuti'),
-            'sertifikat' => $newName,
-        ];
+            // Data untuk disimpan
+            $data = [
+                'NIM' => $NIM,
+                'NIDN' => $NIDN,
+                'tahun' => $this->request->getVar('tahun'),
+                'nama_kompetisi' => $this->request->getVar('nama_kompetisi'),
+                'penyelenggara' => $this->request->getVar('penyelenggara'), 
+                'tingkat_kompetisi' => $this->request->getVar('tingkat_kompetisi'),
+                'jmlh_peserta' => $this->request->getVar('jmlh_peserta'),
+                'prestasi' => $this->request->getVar('prestasi'),
+                'countries' => json_encode($this->request->getVar('countries')),
+                'provinces' => json_encode($this->request->getVar('provinces')),
+                'jmlh_negara_mengikuti' => $this->request->getVar('jmlh_negara_mengikuti'),
+                'jmlh_provinsi_mengikuti' => $this->request->getVar('jmlh_provinsi_mengikuti'),
+                'sertifikat' => $newName,
+            ];
 
+            $model = new Iku2prestasiModel();
+            $model->update($id, $data);
+
+            // Kode untuk menampilkan view setelah update
+            return view('edit_iku2prestasi', $data);
+        }
+    }
+
+    public function show($iku2prestasi_id = null)
+    {
         $model = new Iku2prestasiModel();
-        $model->update($id, $data);
-
-        // Kode untuk menampilkan view setelah update
-        return view('edit_iku2prestasi', $data);
+        $data = $model->find($iku2prestasi_id);
+        if (!$data) {
+            return $this->failNotFound('No Data Found');
+        } else {
+            return $this->respond($data);
+        }
     }
 
-}
-public function show($iku2prestasi_id = null)
-{
-    $model = new Iku2prestasiModel();
-    $data = $model->find($iku2prestasi_id);
-    if (!$data) {
-        return $this->failNotFound('No Data Found');
-    } else {
-        return $this->respond($data);
+    public function delete($iku2prestasi_id = null)
+    {
+        $model = new Iku2prestasiModel();
+        $data = $model->find($iku2prestasi_id);
+
+        if (!$data) {
+            return $this->failNotFound('No Data Found');
+        }
+
+        $model->delete($iku2prestasi_id);
+
+        return $this->respondDeleted(['message' => 'Data Deleted Successfully']);
     }
 }
-
-public function delete($iku2prestasi_id = null)
-{
-    $model = new Iku2prestasiModel();
-    $data = $model->find($iku2prestasi_id);
-
-    if (!$data) {
-        return $this->failNotFound('No Data Found');
-    }
-
-    $model->delete($iku2prestasi_id);
-
-    return $this->respondDeleted(['message' => 'Data Deleted Successfully']);
-}
-
-}
-
-
