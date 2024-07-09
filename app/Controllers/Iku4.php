@@ -1,6 +1,4 @@
 <?php
-
-
 namespace App\Controllers;
 
 
@@ -16,18 +14,34 @@ class Iku4 extends ResourceController
     use ResponseTrait;
 
 
+    protected $iku4Model;
+
+
+    public function __construct()
+    {
+        $this->iku4Model = new Iku4Model();
+    }
+
+
     public function index()
     {
-        $model = new Iku4Model();
-        $data = $model->findAll();
+        $year = $this->request->getGet('year');
+
+
+        if ($year) {
+            $data = $this->iku4Model->where('YEAR(tanggal)', $year)->findAll();
+        } else {
+            $data = $this->iku4Model->findAll();
+        }
+
+
         return $this->respond($data);
     }
 
 
     public function get($iku4_id = null)
     {
-        $model = new Iku4Model();
-        $data = $model->find($iku4_id);
+        $data = $this->iku4Model->find($iku4_id);
         if (!$data) {
             return $this->failNotFound('Data tidak ditemukan');
         } else {
@@ -36,11 +50,28 @@ class Iku4 extends ResourceController
     }
 
 
+    public function getIku4()
+    {
+        $year = $this->request->getGet('year');
+
+
+        if ($year) {
+            $iku4 = $this->iku4Model->where('YEAR(tanggal)', $year)->findAll();
+        } else {
+            $iku4 = $this->iku4Model->findAll();
+        }
+
+
+        return $this->response->setJSON($iku4);
+    }
+
+
     public function getNamaDosen($NIDN = null)
     {
         $dosenModel = new DosenModel();
         $dosen = $dosenModel->find($NIDN);
-       
+
+
         if (!$dosen) {
             return $this->failNotFound('Data tidak ditemukan');
         } else {
@@ -53,7 +84,8 @@ class Iku4 extends ResourceController
     {
         $dosenNIDKModel = new DosenNIDKModel();
         $dosen = $dosenNIDKModel->find($NIDK);
-       
+
+
         if (!$dosen) {
             return $this->failNotFound('Data tidak ditemukan');
         } else {
@@ -64,13 +96,12 @@ class Iku4 extends ResourceController
 
     public function create()
     {
-        $model = new Iku4Model();
-       
         $NIDN = $this->request->getVar('NIDN');
         $NIDK = $this->request->getVar('NIDK');
-       
+
+
         if (empty($NIDN) && empty($NIDK)) {
-            return $this->failValidationError('NIDN atau NIDK harus diisi');
+            return $this->fail('NIDN atau NIDK harus diisi');
         }
 
 
@@ -90,27 +121,26 @@ class Iku4 extends ResourceController
             $file->move(WRITEPATH . 'uploads', $newName);
             $data['bukti_pdf'] = $newName;
         } else {
-            return $this->failValidationError('File PDF tidak valid');
+            return $this->fail('File PDF tidak valid');
         }
 
 
-        if ($model->insert($data)) {
+        if ($this->iku4Model->insert($data)) {
             return $this->respondCreated(['message' => 'Data berhasil disimpan']);
         } else {
-            return $this->failServerError('Gagal menyimpan data');
+            return $this->fail('Gagal menyimpan data');
         }
     }
 
 
     public function update($iku4_id = null)
     {
-        $model = new Iku4Model();
-       
         $NIDN = $this->request->getVar('NIDN');
         $NIDK = $this->request->getVar('NIDK');
-       
+
+
         if (empty($NIDN) && empty($NIDK)) {
-            return $this->failValidationError('NIDN atau NIDK harus diisi');
+            return $this->fail('NIDN atau NIDK harus diisi');
         }
 
 
@@ -130,22 +160,21 @@ class Iku4 extends ResourceController
             $file->move(WRITEPATH . 'uploads', $newName);
             $data['bukti_pdf'] = $newName;
         } elseif ($file->getError() !== UPLOAD_ERR_NO_FILE) {
-            return $this->failValidationError('File PDF tidak valid');
+            return $this->fail('File PDF tidak valid');
         }
 
 
-        if ($model->update($iku4_id, $data)) {
+        if ($this->iku4Model->update($iku4_id, $data)) {
             return $this->respondUpdated(['message' => 'Data berhasil diperbarui']);
         } else {
-            return $this->failServerError('Gagal memperbarui data');
+            return $this->fail('Gagal memperbarui data');
         }
     }
 
 
     public function delete($iku4_id = null)
     {
-        $model = new Iku4Model();
-        $data = $model->find($iku4_id);
+        $data = $this->iku4Model->find($iku4_id);
 
 
         if (!$data) {
@@ -153,12 +182,10 @@ class Iku4 extends ResourceController
         }
 
 
-        if ($model->delete($iku4_id)) {
+        if ($this->iku4Model->delete($iku4_id)) {
             return $this->respondDeleted(['message' => 'Data berhasil dihapus']);
         } else {
-            return $this->failServerError('Gagal menghapus data');
+            return $this->fail('Gagal menghapus data');
         }
     }
 }
-
-
